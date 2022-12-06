@@ -29,7 +29,7 @@ const Header = () => {
         <menu className="flex flex-col sm:flex-row basis-fulls ">
           {menuItem.map((item, index) => (
             <li className="text-center px-4 py-2 text-lg" key={index}>
-              <Link to={item.url.toLowerCase()}>{item.linkText}</Link>
+              <a href={item.url.toLowerCase()} rel="noopener noreferrer">{item.linkText}</a>
             </li>
           ))}
         </menu>
