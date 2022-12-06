@@ -7,13 +7,13 @@ import useActiveWeb3React from "../hooks/useActiveWeb3React";
 import { useEagerConnect } from "../hooks/useEagerConnect";
 import { useInactiveListener } from "../hooks/useInactiveListener";
 import useToast from "../hooks/useToast";
-import { BIG_TEN } from "../utils/bigNumber";
 import { getContract } from "../utils/contractHelpers";
 import { connectorsByName, resetWalletConnectConnector } from "../utils/web3React";
 import { RefreshContext } from "./RefreshContext";
 import erc20Abi from "../config/abi/erc20.json";
 import { getAddress } from "../utils/addressHelpers";
 import { ethers } from "ethers";
+import { BIG_TEN } from "../utils/bigNumber";
 
 export interface GlobalAppContext {
   wallet: {
