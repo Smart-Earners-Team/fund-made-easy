@@ -3,9 +3,9 @@
  */
 module.exports = {
   siteMetadata: {
-    title: "Funding Made Easy",
-    siteUrl: `https://fundingmadeeasy.com`,
-    description: "FundingMadeEazy is a decentralized smart contract on the Binance Smart Chain (BSC). It is a Multiple of 3 through 7 Repetitions called the Easy Matrix (every member will have their own Easy Matrix within the main Easy Matrix)."
+    title: "Funding Made Eazy",
+    siteUrl: `https://fundingmadeEazy.com`,
+    description: "FundingMadeEazy is a decentralized smart contract on the Binance Smart Chain (BSC). It used a Multiple of 3 through 7 Repetitions called the Eazy Matrix (every member will have their own Eazy Matrix within the main Eazy Matrix)."
   },
   flags: {
     DEV_SSR: true
@@ -38,6 +38,7 @@ module.exports = {
         showSpinner: true,
       },
     },
+    "gatsby-plugin-no-sourcemaps",
     {
       resolve: "gatsby-plugin-layout",
       options: {

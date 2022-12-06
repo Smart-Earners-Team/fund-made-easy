@@ -15,9 +15,9 @@ const Header = () => {
       <Link to="/">
         <StaticImage
           src="../images/fund-made-easy.jpg"
-          alt="Fund made easy"
+          alt="Fundingmade Eazy"
           quality={99}
-          width={150}
+          width={200}
         />
       </Link>
       <motion.nav

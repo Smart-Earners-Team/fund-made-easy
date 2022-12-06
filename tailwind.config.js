@@ -21,7 +21,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        montserrat: ["IBM Plex Mono", "monospace"],
+        montserrat: ["Helvetica Neue", "monospace"],
       },
     },
   },

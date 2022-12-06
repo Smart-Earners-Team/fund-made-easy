@@ -10,34 +10,34 @@ const IndexPage = () => {
   return (
     <Layout>
       <Section padding className="space-y-6">
-        <h1>Fund Made Easy</h1>
+        <h1>FundMadeEazy</h1>
         <p>
           {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold")} is a
           decentralized smart contract on the Binance Smart Chain (BSC).
         </p>
         <p>
-          {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold")} is a
+          {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold")} used a
           Multiple of 3 through 7 Repetitions called the{" "}
-          {highlighText("Easy Matrix", "text-[#E6B32A] font-bold")} (every
+          {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold")} (every
           member will have their own{" "}
-          {highlighText("Easy Matrix", "text-[#E6B32A] font-bold")} within the
-          main {highlighText("Easy Matrix", "text-[#E6B32A] font-bold")}).
+          {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold")} within the
+          main {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold")}).
         </p>
         <p>
-          This Easy Matrix assists anyone in raising and receiving Funds (BUSD)
+          This Eazy Matrix assists anyone in raising and receiving Funds (BUSD)
           in 3 Ways:
         </p>
         <ol className="list-decimal list-inside">
           <li>
-            {highlighText("Easy Referrals", "text-[#E6B32A] font-bold no-underline")}{" "}
+            {highlighText("Eazy Referrals", "text-[#E6B32A] font-bold no-underline")}{" "}
             (transferred instantly to your BUSD wallet)
           </li>
           <li>
-            {highlighText("Easy Matrix", "text-[#E6B32A] font-bold no-underline")}{" "}
+            {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold no-underline")}{" "}
             (transferred instantly to your BUSD wallet)
           </li>
           <li>
-            {highlighText("Easy Rewards", "text-[#E6B32A] font-bold no-underline")}{" "}
+            {highlighText("Eazy Rewards", "text-[#E6B32A] font-bold no-underline")}{" "}
             (transferred to your BUSD wallet on a Daily Recurring Basis)
           </li>
         </ol>
@@ -100,6 +100,6 @@ export default IndexPage;
 export const Head: HeadFC = () => (
   <SEO
     title="Home"
-    description="FundingMadeEazy is a decentralized smart contract on the Binance Smart Chain (BSC). It is a Multiple of 3 through 7 Repetitions called the Easy Matrix (every member will have their own Easy Matrix within the main Easy Matrix)."
+    description="FundingMadeEazy is a decentralized smart contract on the Binance Smart Chain (BSC). It used a Multiple of 3 through 7 Repetitions called the Eazy Matrix (every member will have their own Eazy Matrix within the main Eazy Matrix)."
   />
 );

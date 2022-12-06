@@ -1,8 +1,8 @@
 {
-  "name": "fund-made-easy-project",
+  "name": "fund-made-Eazy-project",
   "version": "1.0.0",
   "private": true,
-  "description": "Fund made easy frontend",
+  "description": "Fundingmade Eazy frontend",
   "author": "Ttebify",
   "keywords": [
     "gatsby"
@@ -29,6 +29,7 @@
     "gatsby-plugin-image": "^2.20.0",
     "gatsby-plugin-layout": "^3.20.0",
     "gatsby-plugin-manifest": "^4.20.0",
+    "gatsby-plugin-no-sourcemaps": "4.20.0",
     "gatsby-plugin-nprogress": "^4.20.0",
     "gatsby-plugin-sharp": "^4.20.0",
     "gatsby-plugin-sitemap": "^5.20.0",

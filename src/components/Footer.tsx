@@ -12,7 +12,7 @@ const Footer = () => {
         <a href="https://t.me/fundingmadeeazy" rel="noopener noreferrer">
           <RiTelegramLine size="30px" />
         </a>
-        <a href="https://youtube.com/@fundingmadeeasy2022" rel="noopener noreferrer">
+        <a href="https://youtube.com/@fundingmadeEazy2022" rel="noopener noreferrer">
           <RiYoutubeLine size="30px" />
         </a>
         <a href="https://www.clubhouse.com/join/funding-made-eazy/lBQXhcOU/xkjoaoao?utm_medium=ch_invite&utm_campaign=cJhylbi4uS2GBPEj8TqAsw-488490" rel="noopener noreferrer">
