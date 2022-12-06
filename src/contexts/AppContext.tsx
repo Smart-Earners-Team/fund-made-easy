@@ -13,7 +13,7 @@ import { RefreshContext } from "./RefreshContext";
 import erc20Abi from "../config/abi/erc20.json";
 import { getAddress } from "../utils/addressHelpers";
 import { ethers } from "ethers";
-import { BIG_TEN } from "../utils/bigNumber";
+import { BIG_TEN } from "../utils/bignumber";
 
 export interface GlobalAppContext {
   wallet: {
