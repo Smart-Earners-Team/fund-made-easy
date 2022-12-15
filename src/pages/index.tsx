@@ -81,7 +81,7 @@ const IndexPage = () => {
         </ol>
       </Section>
       <Section padding className="relative">
-        <div className="flex md:flex-row justify-center items-start my-10 md:space-x-10">
+        <div className="flex flex-col space-y-10 md:space-y-0 md:flex-row justify-center items-start my-10 md:space-x-10">
           <div className="w-full shadow-md px-2 py-8 border">
             <div className="rounded-lg py-2 px-4 bg-white border">
               <div className="font-light text-center">
@@ -113,7 +113,7 @@ const IndexPage = () => {
                   Add BUSD to metamask
                 </Link>
               </div>
-              <Button className="w-full">Buy</Button>
+              <Button className="sm:w-full text-sm md:text-base">Buy</Button>
             </div>
           </div>
           <div className="w-full max-w-md mb-3 mx-auto">
@@ -133,7 +133,7 @@ const IndexPage = () => {
                       placeholder="blurred"
                     />
                   }
-                  actionContainer={<Button>Claim Rewards</Button>}
+                  actionContainer={<Button className="w-full text-sm md:text-base">Claim Rewards</Button>}
                 />
                 <div className="flex justify-between gap-4">
                   <MetricChip
