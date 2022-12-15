@@ -10,20 +10,27 @@ interface Props {
   isConnecting: boolean;
 }
 
-export const MoreWalletCard = (props: React.ComponentPropsWithoutRef<"button">) => {
+export const MoreWalletCard = (
+  props: React.ComponentPropsWithoutRef<"button">
+) => {
   return (
     <button
       {...props}
       className="flex items-center text-xs flex-col h-auto justify-center mx-auto
-      w-full py-4"
+      w-full py-4 text-gray-600"
     >
-      <MoreHorizontal className="w-10 mb-1 fill-white" />
+      <MoreHorizontal className="w-10 mb-1 fill-gray-700" />
       More
     </button>
   );
 };
 
-const WalletCard = ({ login, walletConfig, onDismiss, isConnecting }: Props) => {
+const WalletCard = ({
+  login,
+  walletConfig,
+  onDismiss,
+  isConnecting,
+}: Props) => {
   const { title, icon: Icon } = walletConfig;
 
   return (
@@ -42,7 +49,10 @@ const WalletCard = ({ login, walletConfig, onDismiss, isConnecting }: Props) => 
         }
 
         localStorage.setItem(walletLocalStorageKey, walletConfig.title);
-        localStorage.setItem(connectorLocalStorageKey, walletConfig.connectorId);
+        localStorage.setItem(
+          connectorLocalStorageKey,
+          walletConfig.connectorId
+        );
         onDismiss();
       }}
       id={`wallet-connect-${title.toLocaleLowerCase()}`}

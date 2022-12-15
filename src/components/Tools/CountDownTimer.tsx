@@ -21,7 +21,8 @@ const renderTime = (time: number) => {
 };
 
 const getTimeSeconds = (time: number) => (minuteSeconds - time) | 0;
-const getTimeMinutes = (time: number) => ((time % hourSeconds) / minuteSeconds) | 0;
+const getTimeMinutes = (time: number) =>
+  ((time % hourSeconds) / minuteSeconds) | 0;
 const getTimeHours = (time: number) => ((time % daySeconds) / hourSeconds) | 0;
 const getTimeDays = (time: number) => (time / daySeconds) | 0;
 
@@ -41,7 +42,7 @@ export default React.memo(function CoundownTimer({
   const days = Math.ceil(remainingTime / daySeconds);
   const daysDuration = days * daySeconds;
 
-  const color = "#efd43b"
+  const color = "#2DA79A";
 
   return (
     <div className="grid grid-cols-4 grid-rows-1 place-items-center">
@@ -54,7 +55,9 @@ export default React.memo(function CoundownTimer({
           key={uniqueId()}
         >
           {({ elapsedTime, color }) => (
-            <span style={{ color }}>{renderTime(getTimeDays(daysDuration - elapsedTime))}</span>
+            <span style={{ color }}>
+              {renderTime(getTimeDays(daysDuration - elapsedTime))}
+            </span>
           )}
         </CountdownCircleTimer>
         <div className="text-xs mt-2" style={{ color: color }}>
@@ -73,7 +76,9 @@ export default React.memo(function CoundownTimer({
           key={uniqueId()}
         >
           {({ elapsedTime, color }) => (
-            <span style={{ color }}>{renderTime(getTimeHours(daySeconds - elapsedTime))}</span>
+            <span style={{ color }}>
+              {renderTime(getTimeHours(daySeconds - elapsedTime))}
+            </span>
           )}
         </CountdownCircleTimer>
         <div className="text-xs mt-2" style={{ color: color }}>
@@ -92,7 +97,9 @@ export default React.memo(function CoundownTimer({
           key={uniqueId()}
         >
           {({ elapsedTime, color }) => (
-            <span style={{ color }}>{renderTime(getTimeMinutes(hourSeconds - elapsedTime))}</span>
+            <span style={{ color }}>
+              {renderTime(getTimeMinutes(hourSeconds - elapsedTime))}
+            </span>
           )}
         </CountdownCircleTimer>
         <div className="text-xs mt-2" style={{ color: color }}>
@@ -114,7 +121,11 @@ export default React.memo(function CoundownTimer({
           }}
           key={uniqueId()}
         >
-          {({ elapsedTime, color }) => <span style={{ color }}>{renderTime(getTimeSeconds(elapsedTime))}</span>}
+          {({ elapsedTime, color }) => (
+            <span style={{ color }}>
+              {renderTime(getTimeSeconds(elapsedTime))}
+            </span>
+          )}
         </CountdownCircleTimer>
         <div className="text-xs mt-2" style={{ color: color }}>
           Seconds

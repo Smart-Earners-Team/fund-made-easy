@@ -90,7 +90,7 @@ function SEO({ meta = [], title = "", description, slug = "", image }: SEOProps)
               ])
               .concat(meta)
               .map(({ name, property, content }) => (
-                <meta name={name} property={property} content={content} />
+                <meta key={name} name={name} property={property} content={content} />
               ))}
           </Fragment>
         );

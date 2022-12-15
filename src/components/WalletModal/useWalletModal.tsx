@@ -1,8 +1,8 @@
 import React from "react";
+import useModal from "../Modal/useModal";
 import { Login } from "./types";
 import ConnectModal from "./ConnectModal";
 import useWalletContext from "../../hooks/useWalletContext";
-import useModal from "../Modal/useModal";
 
 interface ReturnType {
   onPresentConnectModal: () => void;
