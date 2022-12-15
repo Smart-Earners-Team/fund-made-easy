@@ -76,7 +76,7 @@ const IndexPage = () => {
               "Eazy Rewards",
               "text-[#E6B32A] font-bold no-underline italic"
             )}{" "}
-            (transferred to your BUSD wallet on a Daily Recurring Basis)
+            (available on a Daily Recurring Basis for you to Claim)
           </li>
         </ol>
       </Section>
