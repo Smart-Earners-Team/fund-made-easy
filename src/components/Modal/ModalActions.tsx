@@ -1,8 +1,6 @@
 import React from "react";
 
-const ModalActions: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+const ModalActions: React.FC = ({ children }) => {
   const l = React.Children.toArray(children).length;
   return (
     <div className="flex items-center my-2 py-2">

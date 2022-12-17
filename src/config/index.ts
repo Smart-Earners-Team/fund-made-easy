@@ -12,18 +12,14 @@ export const BASE_BSC_SCAN_URLS = {
 export const BASE_BSC_SCAN_URL = BASE_BSC_SCAN_URLS[ChainId.MAINNET];
 
 export const addresses = {
-  zltSale: {
-    56: "0x02f49F484da3c594576622a1116c05E295F47D1d",
-    97: "",
+  fmeazy: {
+    56: "",
+    97: "0x8A94E269132A23871257fC3212D5e3012B2349Bf",
   },
   busd: {
     56: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-    97: "",
+    97: "0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee",
   },
-  zlt: {
-    56: "0x05D8762946fA7620b263E1e77003927addf5f7E6",
-    97: ""
-  }
 };
 
 export const networkList = {

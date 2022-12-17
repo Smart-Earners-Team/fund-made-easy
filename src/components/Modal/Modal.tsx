@@ -4,7 +4,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { ModalProps } from "./types";
 import cls from "classnames";
 
-const Modal: React.FC<ModalProps & { children: React.ReactNode }> = ({
+const Modal: React.FC<ModalProps> = ({
   title,
   onDismiss,
   onBack,
@@ -27,16 +27,12 @@ const Modal: React.FC<ModalProps & { children: React.ReactNode }> = ({
         </div>
         {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
       </div>
-      <div className="flex flex-col max-h-[90vh] overflow-y-auto">
-        {children}
-      </div>
+      <div className="flex flex-col max-h-[90vh] overflow-y-auto">{children}</div>
     </div>
   );
 };
 
-export const ModalBackButton: React.FC<{ onBack: ModalProps["onBack"] }> = ({
-  onBack,
-}) => {
+export const ModalBackButton: React.FC<{ onBack: ModalProps["onBack"] }> = ({ onBack }) => {
   return (
     <span
       onClick={onBack}
@@ -48,9 +44,7 @@ export const ModalBackButton: React.FC<{ onBack: ModalProps["onBack"] }> = ({
   );
 };
 
-export const ModalCloseButton: React.FC<{
-  onDismiss: ModalProps["onDismiss"];
-}> = ({ onDismiss }) => {
+export const ModalCloseButton: React.FC<{ onDismiss: ModalProps["onDismiss"] }> = ({ onDismiss }) => {
   return (
     <span
       onClick={onDismiss}
@@ -62,36 +56,23 @@ export const ModalCloseButton: React.FC<{
   );
 };
 
-export const ModalHeader: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => <div className="flex items-center border-b py-2 px-6">{children}</div>;
-export const ModalTitle: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => <h2 className="flex items-center w-full text-lg !mb-0">{children}</h2>;
-
-export const ModalBody: React.FC<{
-  className?: string;
-  children: React.ReactNode;
-}> = ({ children, className }) => (
-  <div
-    className={cls(
-      "flex flex-col w-full max-h-[90vh] p-6 overflow-y-auto",
-      className
-    )}
-  >
-    {children}
-  </div>
+export const ModalHeader: React.FC = ({ children }) => (
+  <div className="flex items-center border-b py-2 px-6">{children}</div>
+);
+export const ModalTitle: React.FC = ({ children }) => (
+  <h2 className="flex items-center w-full text-lg !mb-0">{children}</h2>
 );
 
-export const ModalContainer: React.FC<{
-  className?: string;
-  children: React.ReactNode;
-}> = ({ children, className }) => {
+export const ModalBody: React.FC<{ className?: string }> = ({ children, className }) => (
+  <div className={cls("flex flex-col w-full max-h-[90vh] p-6 overflow-y-auto", className)}>{children}</div>
+);
+
+export const ModalContainer: React.FC<{ className?: string }> = ({ children, className }) => {
   return (
     <div
       className={cls(
         "overflow-hidden shadow-lg border max-h-screen z-[999] relative bg-white max-w-lg mx-auto",
-        className
+        className,
       )}
     >
       {children}

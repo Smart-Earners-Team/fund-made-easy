@@ -1,6 +1,6 @@
 import { HeadFC } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "../components/Buttons/Button";
 import ConnectWalletButton from "../components/Buttons/ConnectWalletButton";
 import highlighText from "../components/HighlightText";
@@ -11,6 +11,23 @@ import CountdownTimer from "../components/Tools/CountDownTimer";
 import useActiveWeb3React from "../hooks/useActiveWeb3React";
 import classNames from "classnames";
 import Link from "../components/Link";
+import {
+  getBep20Contract,
+  getBusdContract,
+  getFmeazyContract,
+} from "../utils/contractHelpers";
+import { getBusdAddress, getFmeazyAddress } from "../utils/addressHelpers";
+import BigNumber from "bignumber.js";
+import { MaxUint256 } from "@ethersproject/constants";
+import useApproveToken from "../hooks/useApproveToken";
+import useToast from "../hooks/useToast";
+import useModal from "../components/Modal/useModal";
+import Loading from "../components/Loading";
+import { useCallWithGasPrice } from "../hooks/useCallWithGasPrice";
+import { calculateGasMargin } from "../utils";
+
+const busdAddress = getBusdAddress();
+const fmeazyAddress = getFmeazyAddress();
 
 const IndexPage = () => {
   const [contractBal, setContractBal] = useState("0");
@@ -24,14 +41,113 @@ const IndexPage = () => {
   const [planting, setPlanting] = useState(false);
   const [amountToPay, setAmountToPay] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [approved, setApproved] = useState(false);
+  const [requesting, setRequesting] = useState(true);
 
   const { active, library, account } = useActiveWeb3React();
+
+  const { callWithGasPrice } = useCallWithGasPrice();
+  const { toastError } = useToast();
+  const [presentLoadingModal, dismissLoadingModal] = useModal(
+    <Loading />,
+    false
+  );
+
+  useEffect(() => {
+    if (requesting) {
+      presentLoadingModal();
+    } else {
+      dismissLoadingModal();
+    }
+  }, [requesting]);
+
+  // Check user allowance
+  useEffect(() => {
+    (async () => {
+      setRequesting(true);
+      if (account && active && library) {
+        const contract = getBep20Contract(
+          busdAddress,
+          library?.getSigner(account)
+        );
+        contract
+          .allowance(account, fmeazyAddress)
+          .then(({ _hex }: any) => {
+            if (MaxUint256.eq(_hex)) {
+              setApproved(true);
+            } else {
+              setApproved(false);
+            }
+            return MaxUint256.eq(_hex); // return promise for finally to run
+          })
+          .finally(() => {
+            setRequesting(false);
+          });
+      } else {
+        setApproved(false);
+        setRequesting(false);
+      }
+    })();
+  }, [account, active, library, approved]);
 
   const disableHarvestButton = useCallback((state: boolean) => {
     setHarvestDisabled(state);
   }, []);
 
-  const handleRePlant = useCallback(async () => {}, []);
+  const toastErrorHandler = useCallback(
+    () =>
+      toastError(
+        "Error",
+        "Please try again. Confirm the transaction and make sure you are paying enough gas!"
+      ),
+    []
+  );
+
+  const handleApprove = useCallback(async () => {
+    setRequesting(true);
+
+    try {
+      if (account && library) {
+        const contract = getBusdContract(library?.getSigner(account));
+
+        const estimatedGas = await contract.estimateGas.approve(
+          fmeazyAddress,
+          MaxUint256
+        );
+
+        const tx = await callWithGasPrice(
+          contract,
+          "approve",
+          [fmeazyAddress, MaxUint256],
+          {
+            gasLimit: calculateGasMargin(estimatedGas),
+          }
+        );
+        await tx.wait();
+        setApproved(true);
+      }
+    } catch (e) {
+      console.log(e);
+      toastErrorHandler();
+      setApproved(false);
+    } finally {
+      setRequesting(false);
+    }
+  }, [account, toastError, library]);
+
+  const handleBuy = useCallback(async () => {
+    if (account && library) {
+      try {
+        setRequesting(true);
+        const contract = getFmeazyContract(library.getSigner());
+        await contract.buy(account);
+      } catch (error) {
+        toastErrorHandler();
+      } finally {
+        setRequesting(false);
+      }
+    }
+  }, [account, toastError, library]);
 
   const handleHarvest = useCallback(async () => {}, []);
 
@@ -113,7 +229,21 @@ const IndexPage = () => {
                   Add BUSD to metamask
                 </Link>
               </div>
-              <Button className="sm:w-full text-sm md:text-base">Buy</Button>
+              {approved ? (
+                <Button
+                  className="sm:w-full text-sm md:text-base"
+                  onClick={handleBuy}
+                >
+                  Buy
+                </Button>
+              ) : (
+                <Button
+                  className="sm:w-full text-sm md:text-base"
+                  onClick={handleApprove}
+                >
+                  Approve BUSD
+                </Button>
+              )}
             </div>
           </div>
           <div className="w-full max-w-md mb-3 mx-auto">
@@ -133,7 +263,11 @@ const IndexPage = () => {
                       placeholder="blurred"
                     />
                   }
-                  actionContainer={<Button className="w-full text-sm md:text-base">Claim Rewards</Button>}
+                  actionContainer={
+                    <Button className="w-full text-sm md:text-base">
+                      Claim Rewards
+                    </Button>
+                  }
                 />
                 <div className="flex justify-between gap-4">
                   <MetricChip
@@ -247,9 +381,13 @@ const MetricChip = ({
           <span>{symbol}</span>
         </div>
         <div
-          className={classNames("border-l-4 pl-3 w-full", borderColorClassName, {
-            "border-red-500": !borderColorClassName,
-          })}
+          className={classNames(
+            "border-l-4 pl-3 w-full",
+            borderColorClassName,
+            {
+              "border-red-500": !borderColorClassName,
+            }
+          )}
         >
           <div className="font-medium">{label}</div>
           <div className="font-medium text-gray-500">{value}</div>
