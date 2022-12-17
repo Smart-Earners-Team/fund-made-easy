@@ -18,7 +18,7 @@ export const addresses = {
   },
   busd: {
     56: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-    97: "0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee",
+    97: "0x3807C468D722aAf9e9A82d8b4b1674E66a12E607",
   },
 };
 

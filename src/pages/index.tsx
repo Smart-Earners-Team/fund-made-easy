@@ -10,7 +10,6 @@ import SEO from "../components/SEO";
 import CountdownTimer from "../components/Tools/CountDownTimer";
 import useActiveWeb3React from "../hooks/useActiveWeb3React";
 import classNames from "classnames";
-import Link from "../components/Link";
 import {
   getBep20Contract,
   getBusdContract,
@@ -19,30 +18,44 @@ import {
 import { getBusdAddress, getFmeazyAddress } from "../utils/addressHelpers";
 import BigNumber from "bignumber.js";
 import { MaxUint256 } from "@ethersproject/constants";
-import useApproveToken from "../hooks/useApproveToken";
 import useToast from "../hooks/useToast";
 import useModal from "../components/Modal/useModal";
 import Loading from "../components/Loading";
 import { useCallWithGasPrice } from "../hooks/useCallWithGasPrice";
 import { calculateGasMargin } from "../utils";
+import MetamaskIcon from "../components/Svg/Icons/Metamask";
+import { registerToken } from "../utils/wallet";
+import { ethers } from "ethers";
+
+type UserInfo = {
+  EazyMatrix: ethers.BigNumber;
+  EazyReferrals: ethers.BigNumber;
+  refsWith3: ethers.BigNumber;
+  refsCount: ethers.BigNumber;
+  eazyRewardsPaid: ethers.BigNumber;
+  endDate: ethers.BigNumber;
+  pendingRewards?: ethers.BigNumber;
+};
 
 const busdAddress = getBusdAddress();
 const fmeazyAddress = getFmeazyAddress();
 
 const IndexPage = () => {
-  const [contractBal, setContractBal] = useState("0");
-  const [daysOfReplant, setDaysOfReplant] = useState("0");
-  const [treeBal, setTreeBal] = useState("0");
-  const [avaxRewards, setAvaxRewards] = useState("0");
   const [endTime, setEndTime] = useState(Date.now() / 1000);
-  const [harvestDisabled, setHarvestDisabled] = useState(false);
-  const [rePlanting, setRePlanting] = useState(false);
-  const [harvesting, setHarvesting] = useState(false);
-  const [planting, setPlanting] = useState(false);
-  const [amountToPay, setAmountToPay] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  // const [harvestDisabled, setHarvestDisabled] = useState(false);
   const [approved, setApproved] = useState(false);
   const [requesting, setRequesting] = useState(true);
+  const [userInfo, setUserInfo] = useState<
+    ReturnType<typeof convertBigNumberValuesToString>
+  >({
+    EazyMatrix: "0",
+    EazyReferrals: "0",
+    eazyRewardsPaid: "0",
+    endDate: "0",
+    pendingRewards: "0",
+    refsCount: "0",
+    refsWith3: "0",
+  });
 
   const { active, library, account } = useActiveWeb3React();
 
@@ -53,6 +66,7 @@ const IndexPage = () => {
     false
   );
 
+  // controll request modal
   useEffect(() => {
     if (requesting) {
       presentLoadingModal();
@@ -60,6 +74,36 @@ const IndexPage = () => {
       dismissLoadingModal();
     }
   }, [requesting]);
+
+  // fetch user info
+  useEffect(() => {
+    async function fetchUserInfo() {
+      if (account && library) {
+        const contract = getFmeazyContract(library.getSigner());
+        const usersRes = await contract.users(account);
+        const userInfoRes = await contract.userInfo(account);
+        const {
+          EazyMatrix,
+          EazyReferrals,
+          refsWith3,
+          refsCount,
+          eazyRewardsPaid,
+        } = usersRes;
+        const { endDate, pendingRewards } = userInfoRes;
+        const userInfo = convertBigNumberValuesToString({
+          EazyMatrix,
+          EazyReferrals,
+          refsWith3,
+          refsCount,
+          eazyRewardsPaid,
+          endDate,
+          pendingRewards,
+        });
+        setUserInfo(userInfo);
+      }
+    }
+    fetchUserInfo();
+  }, [account, library]);
 
   // Check user allowance
   useEffect(() => {
@@ -90,9 +134,9 @@ const IndexPage = () => {
     })();
   }, [account, active, library, approved]);
 
-  const disableHarvestButton = useCallback((state: boolean) => {
+  /*   const disableHarvestButton = useCallback((state: boolean) => {
     setHarvestDisabled(state);
-  }, []);
+  }, []); */
 
   const toastErrorHandler = useCallback(
     () =>
@@ -147,9 +191,22 @@ const IndexPage = () => {
         setRequesting(false);
       }
     }
-  }, [account, toastError, library]);
+  }, [account, toastErrorHandler, library]);
 
-  const handleHarvest = useCallback(async () => {}, []);
+  const handleRewardClaim = useCallback(async () => {
+    if (account && library) {
+      try {
+        setRequesting(true);
+        const contract = getFmeazyContract(library.getSigner());
+        const tx = await contract.claimReward();
+        await tx.wait();
+      } catch (error) {
+        toastErrorHandler();
+      } finally {
+        setRequesting(false);
+      }
+    }
+  }, [account, toastError, library]);
 
   return (
     <Layout>
@@ -204,7 +261,7 @@ const IndexPage = () => {
                 <div className="mb-2 font-light">Countdown to Renewal</div>
                 <CountdownTimer
                   timestamp={endTime}
-                  handleDisableButton={disableHarvestButton}
+                  handleDisableButton={() => {}}
                 />
               </div>
             </div>
@@ -225,14 +282,26 @@ const IndexPage = () => {
                     <span className="text-2xl font-light">BUSD</span>
                   </div>
                 </div>
-                <Link to="#" className="underline text-xs text-[#AA8500]">
-                  Add BUSD to metamask
-                </Link>
+                <button
+                  className="underline text-xs text-[#AA8500] flex items-center gap-1"
+                  onClick={() =>
+                    registerToken(
+                      busdAddress,
+                      "FMTTCoins",
+                      18,
+                      `https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/${busdAddress}/logo.png`
+                    )
+                  }
+                >
+                  Add BUSD to metamask{" "}
+                  <MetamaskIcon style={{ cursor: "pointer" }} width="16px" />
+                </button>
               </div>
               {approved ? (
                 <Button
                   className="sm:w-full text-sm md:text-base"
                   onClick={handleBuy}
+                  disabled={requesting}
                 >
                   Buy
                 </Button>
@@ -240,6 +309,7 @@ const IndexPage = () => {
                 <Button
                   className="sm:w-full text-sm md:text-base"
                   onClick={handleApprove}
+                  disabled={requesting}
                 >
                   Approve BUSD
                 </Button>
@@ -251,7 +321,7 @@ const IndexPage = () => {
               <div className="space-y-4">
                 <MetricChip
                   label="Eazy Rewards"
-                  value={treeBal}
+                  value={userInfo.eazyRewardsPaid}
                   symbol="BUSD"
                   borderColorClassName="border-[#FC477E]"
                   icon={
@@ -264,7 +334,11 @@ const IndexPage = () => {
                     />
                   }
                   actionContainer={
-                    <Button className="w-full text-sm md:text-base">
+                    <Button
+                      className="w-full text-sm md:text-base"
+                      disabled={requesting}
+                      onClick={handleRewardClaim}
+                    >
                       Claim Rewards
                     </Button>
                   }
@@ -272,7 +346,7 @@ const IndexPage = () => {
                 <div className="flex justify-between gap-4">
                   <MetricChip
                     label="Eazy Referrals"
-                    value={treeBal}
+                    value={userInfo.EazyReferrals}
                     symbol="BUSD"
                     borderColorClassName="border-[#D38B30]"
                     icon={
@@ -287,7 +361,7 @@ const IndexPage = () => {
                   />
                   <MetricChip
                     label="Referrals Count"
-                    value={treeBal}
+                    value={userInfo.refsCount}
                     symbol="Tally"
                     borderColorClassName="border-[#000000]"
                     icon={
@@ -304,7 +378,7 @@ const IndexPage = () => {
                 <div className="flex justify-between gap-4">
                   <MetricChip
                     label="Eazy Matrix"
-                    value={treeBal}
+                    value={userInfo.EazyMatrix}
                     symbol="BUSD"
                     borderColorClassName="border-[#606AEA]"
                     icon={
@@ -319,7 +393,7 @@ const IndexPage = () => {
                   />
                   <MetricChip
                     label="Referrals With 3"
-                    value={treeBal}
+                    value={userInfo.refsWith3}
                     symbol="Tally"
                     borderColorClassName="border-[#B8D525]"
                     icon={
@@ -397,3 +471,13 @@ const MetricChip = ({
     </div>
   );
 };
+
+function convertBigNumberValuesToString(userInfo: UserInfo) {
+  let newObj = {} as { [P in keyof typeof userInfo]: string };
+  for (const [key, value] of Object.entries(userInfo)) {
+    newObj[key as keyof typeof userInfo] = new BigNumber(
+      value?._hex || 0
+    ).toJSON();
+  }
+  return newObj;
+}
