@@ -45,7 +45,7 @@ type UserInfo = {
   refsWith3: ethers.BigNumber;
   refsCount: ethers.BigNumber;
   eazyRewardsPaid: ethers.BigNumber;
-  pendingRewards?: ethers.BigNumber;
+  pendingReward?: ethers.BigNumber;
   renewalVault?: ethers.BigNumber;
 };
 
@@ -63,7 +63,7 @@ const IndexPage = ({ location }: PageProps) => {
     EazyMatrix: "0",
     EazyReferrals: "0",
     eazyRewardsPaid: "0",
-    pendingRewards: "0",
+    pendingReward: "0",
     refsCount: "0",
     refsWith3: "0",
     renewalVault: "0",
@@ -145,7 +145,7 @@ const IndexPage = ({ location }: PageProps) => {
           eazyRewardsPaid,
           renewalVault,
         } = usersRes as UserInfo;
-        const { endDate, pendingRewards } = userInfoRes;
+        const { endDate, pendingReward } = userInfoRes;
         const endDateformated = new BigNumber(endDate._hex).toNumber();
         const userInfo = convertBigNumberValuesToString(
           {
@@ -154,10 +154,10 @@ const IndexPage = ({ location }: PageProps) => {
             refsWith3,
             refsCount,
             eazyRewardsPaid,
-            pendingRewards,
+            pendingReward,
             renewalVault,
           },
-          ["EazyMatrix", "EazyReferrals", "pendingRewards", "renewalVault", "eazyRewardsPaid"]
+          ["EazyMatrix", "EazyReferrals", "pendingReward", "renewalVault", "eazyRewardsPaid"]
         );
         setUserInfo(userInfo);
         setEndTime(endDateformated);
@@ -166,7 +166,7 @@ const IndexPage = ({ location }: PageProps) => {
           EazyMatrix: "0",
           EazyReferrals: "0",
           eazyRewardsPaid: "0",
-          pendingRewards: "0",
+          pendingReward: "0",
           refsCount: "0",
           refsWith3: "0",
           renewalVault: "0",
@@ -452,11 +452,11 @@ const IndexPage = ({ location }: PageProps) => {
                       <div className="border-l-4 pl-3 w-full border-[#FC477E]">
                         <div className="font-medium">Eazy Rewards</div>
                         <div className="font-medium text-gray-600 text-sm py-1">
-                          Pending: {userInfo.pendingRewards}
+                          Pending: {userInfo.pendingReward}
                         </div>
                       </div>
                     </div>
-                    {userInfo.pendingRewards !== "0" && <div className="w-full">
+                    {userInfo.pendingReward !== "0" && <div className="w-full">
                       <Button
                         className="w-full text-sm md:text-base"
                         disabled={requesting}
@@ -547,6 +547,9 @@ const IndexPage = ({ location }: PageProps) => {
             )}
           </div>
         </div>
+      </Section>
+      <Section>
+
       </Section>
     </Layout>
   );
