@@ -51,7 +51,7 @@ const ConnectWalletButton = ({ className, ...props }: ConnectWalletButtonProps) 
         </Button>
       )}
       {!active && error && (
-        <Button className="!text-red-600 w-auto text-base px-4 py-2" onClick={retry}>
+        <Button className="!text-red-600 text-base px-4 py-2 w-full" onClick={retry}>
           Click to Retry
         </Button>
       )}
