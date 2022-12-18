@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.cdnfonts.com/css/helvetica-neue-9');
+@import url("https://fonts.cdnfonts.com/css/helvetica-neue-9");
 
 @layer base {
   body {
@@ -32,7 +32,7 @@
   }
 
   p {
-    @apply text-2xl
+    @apply text-2xl;
   }
 }
 
@@ -47,5 +47,10 @@
           focus:bg-primary-400 focus:text-black focus-within:bg-primary-400 focus-within:text-black
           disabled:focus:bg-primary-600 disabled:hover:bg-primary-600 disabled:hover:text-white
           disabled:focus-within:bg-primary-600 disabled:focus:text-white disabled:focus-within:text-white;
+  }
+  .btn-outline {
+    @apply text-primary-600 bg-white hover:bg-primary-400 hover:text-black ring-2
+    focus:bg-primary-400 focus:text-black focus-within:bg-primary-400 focus-within:text-black
+    ring-primary-600 hover:ring-primary-400 focus:ring-primary-400 focus-within:ring-primary-400;
   }
 }

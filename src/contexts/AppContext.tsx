@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, createContext, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+} from "react";
 import BigNumber from "bignumber.js";
 import { isAddress } from "ethers/lib/utils";
 import { addresses, networkList } from "../config";
@@ -8,7 +14,10 @@ import { useEagerConnect } from "../hooks/useEagerConnect";
 import { useInactiveListener } from "../hooks/useInactiveListener";
 import useToast from "../hooks/useToast";
 import { getContract } from "../utils/contractHelpers";
-import { connectorsByName, resetWalletConnectConnector } from "../utils/web3React";
+import {
+  connectorsByName,
+  resetWalletConnectConnector,
+} from "../utils/web3React";
 import { RefreshContext } from "./RefreshContext";
 import erc20Abi from "../config/abi/erc20.json";
 import { getAddress } from "../utils/addressHelpers";
@@ -23,8 +32,9 @@ export interface GlobalAppContext {
     error: Error | undefined;
     retry: () => void;
   };
+  setRefAddress: React.Dispatch<React.SetStateAction<string | null>>;
   triggerFetchTokens: () => void;
-  refAddress: string;
+  refAddress: string | null;
 }
 
 const defaultValues: GlobalAppContext = {
@@ -35,21 +45,28 @@ const defaultValues: GlobalAppContext = {
     error: undefined,
     retry: () => {},
   },
+  setRefAddress: () => {},
   triggerFetchTokens: () => {},
-  refAddress: "",
+  refAddress: null,
 };
 
-export const GlobalAppContextProvider = createContext<GlobalAppContext>(defaultValues);
+export const GlobalAppContextProvider =
+  createContext<GlobalAppContext>(defaultValues);
 
-export default function AppContext({ children }: { children: React.ReactNode }) {
+export default function AppContext({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isConnecting, setIsConnecting] = useState(false);
-  const { deactivate, active, error, account, library, setError } = useActiveWeb3React();
+  const { deactivate, active, error, account, library, setError } =
+    useActiveWeb3React();
   const { fast } = useContext(RefreshContext);
   const { toastError } = useToast();
   // get wallet balance in bnb
   const [balance, setBalance] = useState("0");
   // Refferal
-  const [refAddress, setRefAddress] = useState("");
+  const [refAddress, setRefAddress] = useState<string | null>(null);
   /* A workaround, I use this state to trigger an update in this context and
   Refetch the tokenBalances when it changes. */
   const [trigger, setTrigger] = useState(false);
@@ -64,15 +81,15 @@ export default function AppContext({ children }: { children: React.ReactNode }) 
           if (network.chainId !== usingChain) {
             console.error(
               `You have connected to the wrong network.
-                Please switch to the ${networkList[usingChain].name} network`,
+                Please switch to the ${networkList[usingChain].name} network`
             );
             setError(
               new Error(`You have connected to the wrong network.
-              Please switch to the ${networkList[usingChain].name} network`),
+              Please switch to the ${networkList[usingChain].name} network`)
             );
             toastError(
               `You have connected to the wrong network.
-                Please switch to the ${networkList[usingChain].name} network`,
+                Please switch to the ${networkList[usingChain].name} network`
             );
           }
         });
@@ -90,10 +107,10 @@ export default function AppContext({ children }: { children: React.ReactNode }) 
   }, [active, error]);
 
   useEffect(() => {
-    if (account && refFromParams !== null && isAddress(refFromParams)) {
+    if (refFromParams !== null && isAddress(refFromParams)) {
       setRefAddress(refFromParams);
-    } else if (account) {
-      setRefAddress(account);
+    } else {
+      setRefAddress(null);
     }
   }, [account, refFromParams]);
 
@@ -139,6 +156,7 @@ export default function AppContext({ children }: { children: React.ReactNode }) 
           error,
           retry: handleRetry,
         },
+        setRefAddress,
         triggerFetchTokens,
         refAddress,
       }}

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
+import { UnsupportedChainIdError } from "@web3-react/core";
 import { NoBscProviderError } from "@binance-chain/bsc-connector";
 import {
   NoEthereumProviderError,
@@ -13,14 +13,16 @@ import { setupNetwork } from "../utils/wallet";
 import useToast from "../hooks/useToast";
 import { ConnectorNames } from "../components/WalletModal/types";
 import { connectorsByName } from "../utils/web3React";
+import useActiveWeb3React from "./useActiveWeb3React";
 
 const useAuth = () => {
-  const { activate, deactivate } = useWeb3React();
+  const { activate, deactivate } = useActiveWeb3React();
   const { toastError } = useToast();
 
   const login = useCallback(
     (connectorID: ConnectorNames) => {
       const connector = connectorsByName[connectorID];
+      // console.log(connector, "juhuhei")
       if (connector) {
         activate(connector, async (error: Error) => {
           if (error instanceof UnsupportedChainIdError) {

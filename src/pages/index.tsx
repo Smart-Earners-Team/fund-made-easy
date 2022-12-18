@@ -1,6 +1,6 @@
 import { HeadFC } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import Button from "../components/Buttons/Button";
 import ConnectWalletButton from "../components/Buttons/ConnectWalletButton";
 import highlighText from "../components/HighlightText";
@@ -22,10 +22,15 @@ import useToast from "../hooks/useToast";
 import useModal from "../components/Modal/useModal";
 import Loading from "../components/Loading";
 import { useCallWithGasPrice } from "../hooks/useCallWithGasPrice";
-import { calculateGasMargin } from "../utils";
+import { calculateGasMargin, isAddress } from "../utils";
 import MetamaskIcon from "../components/Svg/Icons/Metamask";
 import { registerToken } from "../utils/wallet";
 import { ethers } from "ethers";
+import { useAppContext } from "../hooks/useAppContext";
+import CopyToClipboard from "../components/Tools/copyToClipboard";
+import type { PageProps } from "gatsby";
+import { BIG_TEN } from "../utils/bignumber";
+import InputReferralModal from "../components/InputReferralModal";
 
 type UserInfo = {
   EazyMatrix: ethers.BigNumber;
@@ -33,14 +38,14 @@ type UserInfo = {
   refsWith3: ethers.BigNumber;
   refsCount: ethers.BigNumber;
   eazyRewardsPaid: ethers.BigNumber;
-  endDate: ethers.BigNumber;
   pendingRewards?: ethers.BigNumber;
+  renewalVault?: ethers.BigNumber;
 };
 
 const busdAddress = getBusdAddress();
 const fmeazyAddress = getFmeazyAddress();
 
-const IndexPage = () => {
+const IndexPage = ({ location }: PageProps) => {
   const [endTime, setEndTime] = useState(Date.now() / 1000);
   // const [harvestDisabled, setHarvestDisabled] = useState(false);
   const [approved, setApproved] = useState(false);
@@ -51,11 +56,12 @@ const IndexPage = () => {
     EazyMatrix: "0",
     EazyReferrals: "0",
     eazyRewardsPaid: "0",
-    endDate: "0",
     pendingRewards: "0",
     refsCount: "0",
     refsWith3: "0",
+    renewalVault: "0",
   });
+  const [activeUser, setActiveUser] = useState(false);
 
   const { active, library, account } = useActiveWeb3React();
 
@@ -65,6 +71,8 @@ const IndexPage = () => {
     <Loading />,
     false
   );
+  const [presentReferralInputModal] = useModal(<InputReferralModal />);
+  const { refAddress, setRefAddress } = useAppContext();
 
   // controll request modal
   useEffect(() => {
@@ -75,44 +83,24 @@ const IndexPage = () => {
     }
   }, [requesting]);
 
-  // fetch user info
+  // Check if he can buy
   useEffect(() => {
-    async function fetchUserInfo() {
-      if (account && library) {
-        const contract = getFmeazyContract(library.getSigner());
-        const usersRes = await contract.users(account);
-        const userInfoRes = await contract.userInfo(account);
-        const {
-          EazyMatrix,
-          EazyReferrals,
-          refsWith3,
-          refsCount,
-          eazyRewardsPaid,
-        } = usersRes;
-        const { endDate, pendingRewards } = userInfoRes;
-        const userInfo = convertBigNumberValuesToString({
-          EazyMatrix,
-          EazyReferrals,
-          refsWith3,
-          refsCount,
-          eazyRewardsPaid,
-          endDate,
-          pendingRewards,
-        });
-        setUserInfo(userInfo);
-      }
+    if (account && library) {
+      const contract = getFmeazyContract(library.getSigner(account));
+      contract.isActiveUser(account).then((res: boolean) => {
+        setActiveUser(res);
+      });
     }
-    fetchUserInfo();
   }, [account, library]);
 
   // Check user allowance
   useEffect(() => {
     (async () => {
       setRequesting(true);
-      if (account && active && library) {
+      if (account && library) {
         const contract = getBep20Contract(
           busdAddress,
-          library?.getSigner(account)
+          library.getSigner(account)
         );
         contract
           .allowance(account, fmeazyAddress)
@@ -132,7 +120,43 @@ const IndexPage = () => {
         setRequesting(false);
       }
     })();
-  }, [account, active, library, approved]);
+  }, [account, library, approved]);
+
+  // fetch user info
+  useEffect(() => {
+    async function fetchUserInfo() {
+      if (account && library) {
+        const contract = getFmeazyContract(library.getSigner(account));
+        const usersRes = await contract.users(account);
+        const userInfoRes = await contract.userInfo(account);
+        const {
+          EazyMatrix,
+          EazyReferrals,
+          refsWith3,
+          refsCount,
+          eazyRewardsPaid,
+          renewalVault,
+        } = usersRes as UserInfo;
+        const { endDate, pendingRewards } = userInfoRes;
+        const endDateformated = new BigNumber(endDate._hex).toNumber();
+        const userInfo = convertBigNumberValuesToString(
+          {
+            EazyMatrix,
+            EazyReferrals,
+            refsWith3,
+            refsCount,
+            eazyRewardsPaid,
+            pendingRewards,
+            renewalVault,
+          },
+          ["EazyMatrix", "EazyReferrals", "pendingRewards", "renewalVault"]
+        );
+        setUserInfo(userInfo);
+        setEndTime(endDateformated);
+      }
+    }
+    fetchUserInfo();
+  }, [account, library]);
 
   /*   const disableHarvestButton = useCallback((state: boolean) => {
     setHarvestDisabled(state);
@@ -180,18 +204,36 @@ const IndexPage = () => {
   }, [account, toastError, library]);
 
   const handleBuy = useCallback(async () => {
-    if (account && library) {
-      try {
-        setRequesting(true);
-        const contract = getFmeazyContract(library.getSigner());
-        await contract.buy(account);
-      } catch (error) {
-        toastErrorHandler();
-      } finally {
-        setRequesting(false);
-      }
+    if (account && library && refAddress) {
+      setRequesting(true);
+      const contract = getFmeazyContract(library.getSigner());
+      contract
+        .buy(refAddress)
+        .then((tx: ethers.providers.TransactionResponse) => tx.wait())
+        .catch((error: any) => {
+          const message = error.message;
+          const matched = message.match(/\(reason="(.*)",\sm/);
+          const searched = matched[1] as string; // second part
+          if (searched) {
+            toastError("Failed to buy", searched);
+          } else {
+            toastErrorHandler();
+          }
+        })
+        .finally(() => {
+          setRequesting(false);
+        });
+    } else {
+      toastError("Can't buy without a referral", "Please use a valid referral");
+      presentReferralInputModal();
     }
-  }, [account, toastErrorHandler, library]);
+  }, [
+    account,
+    toastErrorHandler,
+    library,
+    refAddress,
+    presentReferralInputModal,
+  ]);
 
   const handleRewardClaim = useCallback(async () => {
     if (account && library) {
@@ -208,10 +250,28 @@ const IndexPage = () => {
     }
   }, [account, toastError, library]);
 
+  const [error, setError] = useState<null | string>(null);
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.currentTarget.value;
+    const isValid = isAddress(input);
+    if (isValid) {
+      setError(null);
+    } else {
+      setError("Invalid address");
+    }
+    setRefAddress(input);
+  };
+
   return (
     <Layout>
       <Section padding className="space-y-6">
-        <h1>FundingMadeEazy</h1>
+        <StaticImage
+          src="../images/FundingMadeEazy.jpeg"
+          alt=""
+          placeholder="blurred"
+          className="my-3"
+        />
         <p>
           {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold italic")}{" "}
           is a decentralized smart contract on the Binance Smart Chain (BSC).
@@ -253,8 +313,15 @@ const IndexPage = () => {
           </li>
         </ol>
       </Section>
-      <Section padding className="relative">
-        <div className="flex flex-col space-y-10 md:space-y-0 md:flex-row justify-center items-start my-10 md:space-x-10">
+      <Section className="relative">
+        <div className="w-full">
+          <h3>Referral Link</h3>
+          <CopyToClipboard
+            content={`${location.origin}/?ref=${account}`}
+            canCopy={Boolean(account)}
+          />
+        </div>
+        <div className="flex flex-col space-y-10 md:space-y-0 md:flex-row justify-center items-start my-14 md:space-x-5 lg:space-x-10">
           <div className="w-full shadow-md px-2 py-8 border">
             <div className="rounded-lg py-2 px-4 bg-white border">
               <div className="font-light text-center">
@@ -266,83 +333,124 @@ const IndexPage = () => {
               </div>
             </div>
             <div className="h-0.5 bg-gray-200 w-2/3 my-4 mx-auto" />
-            <div className="flex justify-center items-center">
-              <div className="w-full">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-5xl font-light">30</span>
-                  <div className="flex items-baseline gap-2">
-                    <StaticImage
-                      width={35}
-                      height={35}
-                      placeholder="blurred"
-                      alt=""
-                      src="../images/busd-logo.png"
-                      class="flex-none"
-                    />
-                    <span className="text-2xl font-light">BUSD</span>
-                  </div>
-                </div>
-                <button
-                  className="underline text-xs text-[#AA8500] flex items-center gap-1"
-                  onClick={() =>
-                    registerToken(
-                      busdAddress,
-                      "FMTTCoins",
-                      18,
-                      `https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/${busdAddress}/logo.png`
-                    )
-                  }
-                >
-                  Add BUSD to metamask{" "}
-                  <MetamaskIcon style={{ cursor: "pointer" }} width="16px" />
-                </button>
+            {activeUser && (
+              <div className="text-lg text-center">
+                Renewal Vault: {userInfo.renewalVault} BUSD
               </div>
-              {approved ? (
-                <Button
-                  className="sm:w-full text-sm md:text-base"
-                  onClick={handleBuy}
-                  disabled={requesting}
-                >
-                  Buy
-                </Button>
-              ) : (
-                <Button
-                  className="sm:w-full text-sm md:text-base"
-                  onClick={handleApprove}
-                  disabled={requesting}
-                >
-                  Approve BUSD
-                </Button>
-              )}
-            </div>
+            )}
+            {!activeUser && (
+              <Fragment>
+                <div className="flex flex-col sm:flex-row justify-center gap-4 px-4 items-center">
+                  <div className="w-full">
+                    <div className="flex items-baseline gap-3">
+                      <span className="text-5xl font-light">30</span>
+                      <div className="flex items-baseline gap-2">
+                        <StaticImage
+                          width={35}
+                          height={35}
+                          placeholder="blurred"
+                          alt=""
+                          src="../images/busd-logo.png"
+                          class="flex-none"
+                        />
+                        <span className="text-2xl font-light">BUSD</span>
+                      </div>
+                    </div>
+                    <button
+                      className="underline text-xs text-left text-[#AA8500] flex items-center justify-start gap-1"
+                      onClick={() =>
+                        registerToken(
+                          busdAddress,
+                          "FMTTCoins",
+                          18,
+                          `https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/${busdAddress}/logo.png`
+                        )
+                      }
+                    >
+                      Add BUSD to metamask{" "}
+                      <MetamaskIcon
+                        style={{ cursor: "pointer" }}
+                        width="16px"
+                      />
+                    </button>
+                  </div>
+                  {approved ? (
+                    <Button
+                      className="w-full text-sm md:text-base"
+                      onClick={handleBuy}
+                      disabled={requesting}
+                    >
+                      Buy
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full text-sm md:text-base"
+                      onClick={handleApprove}
+                      disabled={requesting}
+                    >
+                      Approve
+                    </Button>
+                  )}
+                </div>
+                <div className="bg-white py-5 px-4 mx-auto max-w-lg">
+                  <h3 className="text-sm">Enter a Valid Referral Address</h3>
+                  <input
+                    className="border w-full p-1 bg-gray-50"
+                    onChange={handleOnChange}
+                    value={refAddress || ""}
+                  />
+                  {error && (
+                    <div className="text-sm bg-red-50 text-red-400 my-1">
+                      {error}
+                    </div>
+                  )}
+                </div>
+              </Fragment>
+            )}
           </div>
           <div className="w-full max-w-md mb-3 mx-auto">
             {active ? (
               <div className="space-y-4">
-                <MetricChip
-                  label="Eazy Rewards"
-                  value={userInfo.eazyRewardsPaid}
-                  symbol="BUSD"
-                  borderColorClassName="border-[#FC477E]"
-                  icon={
-                    <StaticImage
-                      alt=""
-                      src="../images/golden-reward-small-image.png"
-                      width={20}
-                      height={20}
-                      placeholder="blurred"
-                    />
-                  }
-                  actionContainer={
-                    <Button
-                      className="w-full text-sm md:text-base"
-                      disabled={requesting}
-                      onClick={handleRewardClaim}
-                    >
-                      Claim Rewards
-                    </Button>
-                  }
-                />
+                {/* start */}
+
+                <div className="bg-white py-2 px-3 shadow-md rounded-lg text-base w-full border">
+                  <div className="flex gap-4 justify-between items-start">
+                    <div className="space-y-1 w-full">
+                      <div className="flex items-center text-xs space-x-1">
+                        <StaticImage
+                          alt=""
+                          src="../images/golden-reward-small-image.png"
+                          width={20}
+                          height={20}
+                          placeholder="blurred"
+                        />
+                        <span>BUSD</span>
+                      </div>
+                      <div className="border-l-4 pl-3 w-full border-[#FC477E]">
+                        <div className="font-medium">Eazy Rewards</div>
+                        <div className="font-medium text-gray-600 text-sm py-1">
+                          Pending: {userInfo.pendingRewards}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full">
+                      <Button
+                        className="w-full text-sm md:text-base"
+                        disabled={requesting}
+                        onClick={handleRewardClaim}
+                      >
+                        Claim
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="border-l-4 pl-3 w-full border-[#FC477E] border-t py-1">
+                    <div className="text-gray-600 text-sm">
+                      Paid: {userInfo.eazyRewardsPaid}
+                    </div>
+                  </div>
+                </div>
+
+                {/* end */}
                 <div className="flex justify-between gap-4">
                   <MetricChip
                     label="Eazy Referrals"
@@ -472,12 +580,22 @@ const MetricChip = ({
   );
 };
 
-function convertBigNumberValuesToString(userInfo: UserInfo) {
+function convertBigNumberValuesToString(
+  userInfo: UserInfo,
+  busdValues: string[]
+) {
   let newObj = {} as { [P in keyof typeof userInfo]: string };
   for (const [key, value] of Object.entries(userInfo)) {
-    newObj[key as keyof typeof userInfo] = new BigNumber(
-      value?._hex || 0
-    ).toJSON();
+    if (busdValues.includes(key)) {
+      // div busd values by 18, hack.
+      newObj[key as keyof typeof userInfo] = new BigNumber(value?._hex || 0)
+        .div(BIG_TEN.pow(18))
+        .toJSON();
+    } else {
+      newObj[key as keyof typeof userInfo] = new BigNumber(
+        value?._hex || 0
+      ).toJSON();
+    }
   }
   return newObj;
 }

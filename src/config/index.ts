@@ -14,7 +14,7 @@ export const BASE_BSC_SCAN_URL = BASE_BSC_SCAN_URLS[ChainId.MAINNET];
 export const addresses = {
   fmeazy: {
     56: "",
-    97: "0x8A94E269132A23871257fC3212D5e3012B2349Bf",
+    97: "0xc5DdfDE6dD3C0a45ad6eF157BB908849b268dDd9",
   },
   busd: {
     56: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
