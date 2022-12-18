@@ -161,6 +161,17 @@ const IndexPage = ({ location }: PageProps) => {
         );
         setUserInfo(userInfo);
         setEndTime(endDateformated);
+      } else {
+        setUserInfo({
+          EazyMatrix: "0",
+          EazyReferrals: "0",
+          eazyRewardsPaid: "0",
+          pendingRewards: "0",
+          refsCount: "0",
+          refsWith3: "0",
+          renewalVault: "0",
+        });
+        setEndTime(Date.now() / 1000);
       }
     }
     fetchUserInfo();
