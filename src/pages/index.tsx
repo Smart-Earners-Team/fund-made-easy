@@ -172,6 +172,7 @@ const IndexPage = ({ location }: PageProps) => {
           renewalVault: "0",
         });
         setEndTime(Date.now() / 1000);
+        setActiveUser(false);
       }
     }
     fetchUserInfo();
@@ -402,7 +403,7 @@ const IndexPage = ({ location }: PageProps) => {
                     >
                       Buy
                     </Button>
-                  ) : (
+                  ) : active ? (
                     <Button
                       className="w-full text-sm md:text-base"
                       onClick={handleApprove}
@@ -410,6 +411,8 @@ const IndexPage = ({ location }: PageProps) => {
                     >
                       Approve
                     </Button>
+                  ) : (
+                    <ConnectWalletButton />
                   )}
                 </div>
                 <div className="bg-white py-5 px-4 mx-auto max-w-lg">
@@ -453,7 +456,7 @@ const IndexPage = ({ location }: PageProps) => {
                         </div>
                       </div>
                     </div>
-                    <div className="w-full">
+                    {userInfo.pendingRewards !== "0" && <div className="w-full">
                       <Button
                         className="w-full text-sm md:text-base"
                         disabled={requesting}
@@ -461,7 +464,7 @@ const IndexPage = ({ location }: PageProps) => {
                       >
                         Claim
                       </Button>
-                    </div>
+                    </div>}
                   </div>
                   <div className="border-l-4 pl-3 w-full border-[#FC477E] border-t py-1">
                     <div className="text-gray-600 text-sm">
