@@ -1,6 +1,12 @@
 import { HeadFC } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import Button from "../components/Buttons/Button";
 import ConnectWalletButton from "../components/Buttons/ConnectWalletButton";
 import highlighText from "../components/HighlightText";
@@ -31,6 +37,7 @@ import CopyToClipboard from "../components/Tools/copyToClipboard";
 import type { PageProps } from "gatsby";
 import { BIG_TEN } from "../utils/bignumber";
 import InputReferralModal from "../components/InputReferralModal";
+import { RefreshContext } from "../contexts/RefreshContext";
 
 type UserInfo = {
   EazyMatrix: ethers.BigNumber;
@@ -64,6 +71,7 @@ const IndexPage = ({ location }: PageProps) => {
   const [activeUser, setActiveUser] = useState(false);
 
   const { active, library, account } = useActiveWeb3React();
+  const { fast } = useContext(RefreshContext);
 
   const { callWithGasPrice } = useCallWithGasPrice();
   const { toastError } = useToast();
@@ -91,7 +99,7 @@ const IndexPage = ({ location }: PageProps) => {
         setActiveUser(res);
       });
     }
-  }, [account, library]);
+  }, [account, library, fast]);
 
   // Check user allowance
   useEffect(() => {
@@ -156,7 +164,7 @@ const IndexPage = ({ location }: PageProps) => {
       }
     }
     fetchUserInfo();
-  }, [account, library]);
+  }, [account, library, fast]);
 
   /*   const disableHarvestButton = useCallback((state: boolean) => {
     setHarvestDisabled(state);
@@ -210,6 +218,7 @@ const IndexPage = ({ location }: PageProps) => {
       contract
         .buy(refAddress)
         .then((tx: ethers.providers.TransactionResponse) => tx.wait())
+        .then(() => setActiveUser(true)) // user is active
         .catch((error: any) => {
           const message = error.message;
           const matched = message.match(/\(reason="(.*)",\sm/);

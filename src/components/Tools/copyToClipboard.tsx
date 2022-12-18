@@ -26,7 +26,7 @@ export default function CopyToClipboard({ title, content, canCopy = true }: Copy
       <pre className="overflow-x-auto flex-1">
         {title && `${title}:`}{" "}
         <code ref={codeElement} onClick={copyHandler}>
-          {content}
+        {!canCopy ? "Please connect to your wallet" : content}
         </code>
       </pre>
       {canCopy && (
