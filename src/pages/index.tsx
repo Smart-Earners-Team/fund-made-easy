@@ -157,7 +157,7 @@ const IndexPage = ({ location }: PageProps) => {
             pendingRewards,
             renewalVault,
           },
-          ["EazyMatrix", "EazyReferrals", "pendingRewards", "renewalVault"]
+          ["EazyMatrix", "EazyReferrals", "pendingRewards", "renewalVault", "eazyRewardsPaid"]
         );
         setUserInfo(userInfo);
         setEndTime(endDateformated);
