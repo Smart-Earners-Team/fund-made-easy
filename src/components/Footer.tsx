@@ -1,6 +1,7 @@
 import React from "react";
 import { RiTelegramLine, RiTwitterLine, RiYoutubeLine } from "react-icons/ri";
 import { GiHouse } from "react-icons/gi";
+import Binance from "./Svg/Icons/Binance";
 
 const Footer = () => {
   return (
@@ -17,6 +18,9 @@ const Footer = () => {
         </a>
         <a href="https://www.clubhouse.com/join/funding-made-eazy/lBQXhcOU/xkjoaoao?utm_medium=ch_invite&utm_campaign=cJhylbi4uS2GBPEj8TqAsw-488490" rel="noopener noreferrer">
           <GiHouse size="30px" />
+        </a>
+        <a href="https://bscscan.com/address/0xe07fba203de97e896d90244f720347ebdaacb3c5#writeContract" rel="noopener noreferrer">
+          <Binance width={30} height={30} />
         </a>
       </div>
     </footer>

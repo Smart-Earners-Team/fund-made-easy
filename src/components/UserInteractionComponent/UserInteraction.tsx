@@ -343,14 +343,17 @@ function UserInteractionComponent({ location }: PageProps) {
                     <MetamaskIcon style={{ cursor: "pointer" }} width="16px" />
                   </button>
                 </div>
-                {approved ? (
-                  <Button
-                    className="w-full text-sm md:text-base"
-                    onClick={handleBuy}
-                    disabled={requesting || userInfo.busdBal < 30}
-                  >
-                    Buy
-                  </Button>
+                {!approved ? (
+                  <div className="w-full flex flex-col gap-1">
+                    <Button
+                      className="text-sm md:text-base"
+                      onClick={handleBuy}
+                      disabled={userInfo.busdBal > 20 || requesting}
+                    >
+                      Buy
+                    </Button>
+                    <small className="text-xs text-center text-red-500 font-light">Insufficient BUSD balance</small>
+                  </div>
                 ) : active ? (
                   <Button
                     className="w-full text-sm md:text-base"
