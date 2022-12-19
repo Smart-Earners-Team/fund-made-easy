@@ -352,7 +352,11 @@ function UserInteractionComponent({ location }: PageProps) {
                     >
                       Buy
                     </Button>
-                    <small className="text-xs text-center text-red-500 font-light">Insufficient BUSD balance</small>
+                    {userInfo.busdBal < 30 && (
+                      <small className="text-xs text-center text-red-500 font-light">
+                        Insufficient BUSD balance
+                      </small>
+                    )}
                   </div>
                 ) : active ? (
                   <Button
