@@ -3,7 +3,7 @@ import React from "react";
 
 interface MetricChipProps {
     label: string;
-    value: string;
+    value: number;
     symbol: string;
     borderColorClassName?: string;
     icon: React.ReactNode;

@@ -6,6 +6,7 @@ export type UserInfo = {
     refsWith3: ethers.BigNumber;
     refsCount: ethers.BigNumber;
     eazyRewardsPaid: ethers.BigNumber;
+    busdBal: ethers.BigNumber;
     pendingReward?: ethers.BigNumber;
     renewalVault?: ethers.BigNumber;
   };

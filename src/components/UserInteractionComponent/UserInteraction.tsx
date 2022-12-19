@@ -30,7 +30,7 @@ import {
 import { getBusdAddress, getFmeazyAddress } from "../../utils/addressHelpers";
 import Button from "../../components/Buttons/Button";
 import ConnectWalletButton from "../../components/Buttons/ConnectWalletButton";
-import { convertBigNumberValuesToString } from "./utils";
+import { formatBigNumberValues } from "./utils";
 import type { UserInfo } from "./types";
 import Section from "../Section";
 import { StaticImage } from "gatsby-plugin-image";
@@ -45,15 +45,16 @@ function UserInteractionComponent({ location }: PageProps) {
   const [approved, setApproved] = useState(false);
   const [requesting, setRequesting] = useState(true);
   const [userInfo, setUserInfo] = useState<
-    ReturnType<typeof convertBigNumberValuesToString>
+    ReturnType<typeof formatBigNumberValues>
   >({
-    EazyMatrix: "0",
-    EazyReferrals: "0",
-    eazyRewardsPaid: "0",
-    pendingReward: "0",
-    refsCount: "0",
-    refsWith3: "0",
-    renewalVault: "0",
+    EazyMatrix: 0,
+    EazyReferrals: 0,
+    eazyRewardsPaid: 0,
+    pendingReward: 0,
+    refsCount: 0,
+    refsWith3: 0,
+    renewalVault: 0,
+    busdBal: 0,
   });
   const [activeUser, setActiveUser] = useState(false);
 
@@ -122,8 +123,11 @@ function UserInteractionComponent({ location }: PageProps) {
     async function fetchUserInfo() {
       if (account && library) {
         const contract = getFmeazyContract(library.getSigner(account));
+        const busdContract = getBep20Contract(busdAddress, library.getSigner());
+
         const usersRes = await contract.users(account);
         const userInfoRes = await contract.userInfo(account);
+        const busdBal = await busdContract.balanceOf(account);
         const {
           EazyMatrix,
           EazyReferrals,
@@ -134,7 +138,7 @@ function UserInteractionComponent({ location }: PageProps) {
         } = usersRes as UserInfo;
         const { endDate, pendingReward } = userInfoRes;
         const endDateformated = new BigNumber(endDate._hex).toNumber();
-        const userInfo = convertBigNumberValuesToString(
+        const userInfo = formatBigNumberValues(
           {
             EazyMatrix,
             EazyReferrals,
@@ -143,6 +147,7 @@ function UserInteractionComponent({ location }: PageProps) {
             eazyRewardsPaid,
             pendingReward,
             renewalVault,
+            busdBal,
           },
           [
             "EazyMatrix",
@@ -150,19 +155,21 @@ function UserInteractionComponent({ location }: PageProps) {
             "pendingReward",
             "renewalVault",
             "eazyRewardsPaid",
+            "busdBal",
           ]
         );
         setUserInfo(userInfo);
         setEndTime(endDateformated);
       } else {
         setUserInfo({
-          EazyMatrix: "0",
-          EazyReferrals: "0",
-          eazyRewardsPaid: "0",
-          pendingReward: "0",
-          refsCount: "0",
-          refsWith3: "0",
-          renewalVault: "0",
+          EazyMatrix: 0,
+          EazyReferrals: 0,
+          eazyRewardsPaid: 0,
+          pendingReward: 0,
+          refsCount: 0,
+          refsWith3: 0,
+          renewalVault: 0,
+          busdBal: 0,
         });
         setEndTime(Date.now() / 1000);
         setActiveUser(false);
@@ -287,7 +294,7 @@ function UserInteractionComponent({ location }: PageProps) {
         />
       </div>
       <div className="flex flex-col space-y-10 md:space-y-0 md:flex-row justify-center items-start my-14 md:space-x-5 lg:space-x-10">
-        <div className="w-full shadow-md px-2 py-8 border">
+        <div className="w-full md:min-w-[450px] shadow-md px-2 py-8 border">
           <div className="rounded-lg py-2 px-4 bg-white border">
             <div className="font-light text-center">
               <div className="mb-2 font-light">Countdown to Renewal</div>
@@ -340,7 +347,7 @@ function UserInteractionComponent({ location }: PageProps) {
                   <Button
                     className="w-full text-sm md:text-base"
                     onClick={handleBuy}
-                    disabled={requesting}
+                    disabled={requesting || userInfo.busdBal < 30}
                   >
                     Buy
                   </Button>
@@ -397,7 +404,7 @@ function UserInteractionComponent({ location }: PageProps) {
                       </div>
                     </div>
                   </div>
-                  {userInfo.pendingReward !== "0" && (
+                  {userInfo.pendingReward !== 0 && (
                     <div className="w-full">
                       <Button
                         className="w-full text-sm md:text-base"
