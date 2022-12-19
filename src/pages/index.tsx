@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { HeadFC, PageProps } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
 import highlighText from "../components/HighlightText";
@@ -6,11 +6,11 @@ import Layout from "../components/Layout";
 import Section from "../components/Section";
 import SEO from "../components/SEO";
 import UserInteractionComponent from "../components/UserInteractionComponent/UserInteraction";
-// import CountdownTimer from "../components/Tools/CountDownTimer";
+import CountdownTimer from "../components/Tools/CountDownTimer";
 
 const IndexPage = (props: PageProps
   ) => {
-  // const [endTime] = useState(1671472800);
+  const [endTime] = useState(1671559200);
 
   return (
     <Layout>
@@ -62,13 +62,13 @@ const IndexPage = (props: PageProps
           </li>
         </ol>
       </Section>
-      <UserInteractionComponent {...props} />
-      {/* <Section className="flex justify-center flex-col max-w-3xl mx-auto border text-center">
+      <Section className="flex justify-center flex-col max-w-3xl mx-auto border text-center">
         <div className="p-4 space-y-4">
-          <p className="text-center">Pre registration starts in</p>
+          <p className="text-center">Countdown to Public Launch</p>
           <CountdownTimer timestamp={endTime} handleDisableButton={() => {}} />
         </div>
-      </Section> */}
+      </Section>
+      <UserInteractionComponent {...props} />
     </Layout>
   );
 };

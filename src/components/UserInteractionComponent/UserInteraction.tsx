@@ -285,7 +285,7 @@ function UserInteractionComponent({ location }: PageProps) {
   };
 
   return (
-    <Section className="relative">
+    <Section padding className="relative">
       <div className="w-full">
         <h3>Referral Link</h3>
         <CopyToClipboard
@@ -343,12 +343,12 @@ function UserInteractionComponent({ location }: PageProps) {
                     <MetamaskIcon style={{ cursor: "pointer" }} width="16px" />
                   </button>
                 </div>
-                {!approved ? (
+                {approved ? (
                   <div className="w-full flex flex-col gap-1">
                     <Button
                       className="text-sm md:text-base"
                       onClick={handleBuy}
-                      disabled={userInfo.busdBal > 20 || requesting}
+                      disabled={userInfo.busdBal < 30 || requesting}
                     >
                       Buy
                     </Button>
