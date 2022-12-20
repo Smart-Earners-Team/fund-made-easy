@@ -1,7 +1,7 @@
 export const menuItem = [
   {
     linkText: "EazyPaper",
-    url: "https://fundingmadeeazy.com/EazyPaper.pdf",
+    url: "https://fundingmadeeazy.com/eazypaper.pdf",
   },
   {
     linkText: "Contract",
