@@ -27,10 +27,10 @@ const ConnectWalletButton = ({ className, ...props }: ConnectWalletButtonProps) 
         <Button
           aria-label="Open connect modal"
           onClick={openModal}
-          className="block w-full text-base rounded-lg bg-red-600/30 hover:bg-red-600/50 text-gray-600
+          className="block w-full text-base rounded-lg bg-primary-600/30 hover:bg-primary-600/50 text-gray-600
             px-4 py-2 shadow-none"
         >
-          <BsWalletFill className="h-6 w-6 inline-block text-red-700 hover:text-red-800 mx-2" />
+          <BsWalletFill className="h-6 w-6 inline-block text-primary-700 hover:text-primary-800 mx-2" />
           {truncateHash(account)}
         </Button>
       )}

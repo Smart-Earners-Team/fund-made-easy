@@ -310,6 +310,9 @@ function UserInteractionComponent({ location }: PageProps) {
               Renewal Vault: {userInfo.renewalVault} BUSD
             </div>
           )}
+          {active && <div className="my-3">
+            <ConnectWalletButton />
+          </div>}
           {!activeUser && (
             <Fragment>
               <div className="flex flex-col sm:flex-row justify-center gap-4 px-4 items-center">

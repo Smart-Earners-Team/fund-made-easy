@@ -19,7 +19,7 @@ const Footer = () => {
         <a href="https://www.clubhouse.com/join/funding-made-eazy/lBQXhcOU/xkjoaoao?utm_medium=ch_invite&utm_campaign=cJhylbi4uS2GBPEj8TqAsw-488490" rel="noopener noreferrer">
           <GiHouse size="30px" />
         </a>
-        <a href="https://bscscan.com/address/0xe07fba203de97e896d90244f720347ebdaacb3c5#writeContract" rel="noopener noreferrer">
+        <a href="https://bscscan.com/address/0x4A6f3b2fd9E02BaED5515ebfAFAC8D2d501b909A#writeContract" rel="noopener noreferrer">
           <Binance width={30} height={30} />
         </a>
       </div>
