@@ -1,5 +1,5 @@
 import React from "react";
-import { RiTelegramLine, RiTwitterLine, RiYoutubeLine } from "react-icons/ri";
+import { RiInstagramLine, RiTelegramLine, RiTwitterLine, RiYoutubeLine } from "react-icons/ri";
 import { GiHouse } from "react-icons/gi";
 import Binance from "./Svg/Icons/Binance";
 
@@ -12,6 +12,9 @@ const Footer = () => {
         </a>
         <a href="https://t.me/fundingmadeeazy" rel="noopener noreferrer">
           <RiTelegramLine size="30px" />
+        </a>
+        <a href="https://www.instagram.com/p/Cmp8U7XIbvl/?igshid=YmMyMTA2M2Y=" rel="noopener noreferrer">
+          <RiInstagramLine size="30px" />
         </a>
         <a href="https://youtube.com/@fundingmadeEazy2022" rel="noopener noreferrer">
           <RiYoutubeLine size="30px" />
