@@ -7,17 +7,17 @@ const Footer = () => {
   return (
     <footer className="bg-gray-200 flex flex-col flex-wrap items-center p-5 mt-10">
       <div className="flex flex-wrap gap-8 p-10 border-solid w-full justify-center items-center">
-        <a href="https://twitter.com/abdul_shabz?t=aBWHixvZbOi93B2n0WEdtg&s=09" rel="noopener noreferrer" target={'_blank'}>
-          <RiTwitterLine size="30px" />
-        </a>
-        <a href="https://t.me/fundingmadeeazy" rel="noopener noreferrer" target={'_blank'}>
-          <RiTelegramLine size="30px" />
-        </a>
         <a href="https://www.instagram.com/fundingmadeeazy.com_official/" rel="noopener noreferrer" target={'_blank'}>
           <RiInstagramLine size="30px" />
         </a>
         <a href="https://youtube.com/@fundingmadeEazy2022" rel="noopener noreferrer" target={'_blank'}>
           <RiYoutubeLine size="30px" />
+        </a>
+        <a href="https://t.me/fundingmadeeazy" rel="noopener noreferrer" target={'_blank'}>
+          <RiTelegramLine size="30px" />
+        </a>
+        <a href="https://twitter.com/abdul_shabz?t=aBWHixvZbOi93B2n0WEdtg&s=09" rel="noopener noreferrer" target={'_blank'}>
+          <RiTwitterLine size="30px" />
         </a>
         <a href="https://www.clubhouse.com/join/funding-made-eazy/lBQXhcOU/xkjoaoao?utm_medium=ch_invite&utm_campaign=cJhylbi4uS2GBPEj8TqAsw-488490" rel="noopener noreferrer" target={'_blank'}>
           <GiHouse size="30px" />

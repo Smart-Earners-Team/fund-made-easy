@@ -21,23 +21,14 @@ const IndexPage = (props: PageProps) => {
           className="my-3"
         />
         <p>
-          {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold italic")}{" "}
-          is a decentralized smart contract on the Binance Smart Chain (BSC).
+          Welcome to {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold italic")}{".com"}, the decentralized smart contract on the BNB Smart Chain that helps you raise and receive <span className="font-bold italic">Funds (BUSD)</span> in a snap!
         </p>
+        
         <p>
-          {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold italic")}{" "}
-          uses a Multiple of 3 through 7 Repetitions called the{" "}
-          {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold italic")}{" "}
-          (every member will have their own{" "}
-          {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold italic")}{" "}
-          within the main{" "}
-          {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold italic")}).
+          Our {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold italic")}{" "} system, which uses a <span className="font-bold">Multiple of 3 through 7 Repetitions</span>, lets you raise <span className="font-bold">Funds (BUSD)</span> through:
         </p>
-        <p>
-          This {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold italic")}{" "}
-          assists anyone in raising and receiving Funds (BUSD) in 3 Ways:
-        </p>
-        <ol className="list-decimal list-inside">
+
+        <ol className="list-disc pl-10">
           <li>
             {highlighText(
               "Eazy Referrals",
@@ -60,6 +51,26 @@ const IndexPage = (props: PageProps) => {
             (available on a Daily Recurring Basis for you to Claim)
           </li>
         </ol>
+
+        <p>
+          Simply invite three or more people to join, who will repeat this {highlighText("Eazy", "text-[#E6B32A] font-bold italic")}{" "} process.
+        </p>
+
+        <p>
+          We are all about sharing the wealth here at {highlighText("FundingMadeEazy.", "text-[#E6B32A] font-bold italic")}{" "}
+        </p>
+
+        <p>
+          Pls refer to our <a 
+          href="https://fundingmadeeazy.com/eazypaper.pdf"
+          target={'_blank'}
+          >{highlighText("Eazy", "text-[#E6B32A] font-bold italic")}{"Paper"}</a> for more details.
+        </p>
+
+        <p>
+          And just Connect your wallet (Trust Wallet or Metamask) to start raising <span className="font-bold">Funds (BUSD)</span> and getting rewarded with {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold italic")}{".com"} today and everyday!
+        </p>
+
       </Section>
       {/*       <Section className="flex justify-center flex-col max-w-3xl mx-auto border text-center">
         <div className="p-4 space-y-4">
