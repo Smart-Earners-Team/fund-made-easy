@@ -21,9 +21,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        montserrat: ["Helvetica Neue", "monospace"],
+        montserrat: ["Inter", "monospace"],
       },
     },
   },
   plugins: [],
-}
+};

@@ -1,11 +1,12 @@
 import React, { Fragment } from "react";
 import type { HeadFC, PageProps } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
-import highlighText from "../components/HighlightText";
+import highlighTextPrimary from "../components/HighlightText";
 import Layout from "../components/Layout";
 import Section from "../components/Section";
 import SEO from "../components/SEO";
 import UserInteractionComponent from "../components/UserInteractionComponent/UserInteraction";
+import CopyToClipboard from "../components/Tools/copyToClipboard";
 // import CountdownTimer from "../components/Tools/CountDownTimer";
 
 const IndexPage = (props: PageProps) => {
@@ -20,57 +21,40 @@ const IndexPage = (props: PageProps) => {
           placeholder="blurred"
           className="my-3"
         />
-        <p>
-          Welcome to {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold italic")}{".com"}, the decentralized smart contract on the BNB Smart Chain that helps you raise and receive <span className="font-bold italic">Funds (BUSD)</span> in a snap!
-        </p>
-        
-        <p>
-          Our {highlighText("Eazy Matrix", "text-[#E6B32A] font-bold italic")}{" "} system, which uses a <span className="font-bold">Multiple of 3 through 7 Repetitions</span>, lets you raise <span className="font-bold">Funds (BUSD)</span> through:
-        </p>
-
-        <ol className="list-disc pl-10">
-          <li>
-            {highlighText(
-              "Eazy Referrals",
-              "text-[#E6B32A] font-bold no-underline italic"
-            )}{" "}
-            (transferred instantly to your BUSD wallet)
-          </li>
-          <li>
-            {highlighText(
-              "Eazy Matrix",
-              "text-[#E6B32A] font-bold no-underline italic"
-            )}{" "}
-            (transferred instantly to your BUSD wallet)
-          </li>
-          <li>
-            {highlighText(
-              "Eazy Rewards",
-              "text-[#E6B32A] font-bold no-underline italic"
-            )}{" "}
-            (available on a Daily Recurring Basis for you to Claim)
-          </li>
-        </ol>
 
         <p>
-          Simply invite three or more people to join, who will repeat this {highlighText("Eazy", "text-[#E6B32A] font-bold italic")}{" "} process.
+          Welcome to {highlighTextPrimary("FundingMadeEazy")}, the decentralized
+          smart contract on the <i>BNB (Binance) Smart Chain</i> that helps you
+          raise and receive <b className="italic">Funds (BUSD)</b> in a snap!
         </p>
-
         <p>
-          We are all about sharing the wealth here at {highlighText("FundingMadeEazy.", "text-[#E6B32A] font-bold italic")}{" "}
+          Our {highlighTextPrimary("Eazy Matrix")} system, which uses a{" "}
+          <b className="italic">Multiple of 3 through 7 Repetitions</b>, lets
+          you raise <b className="italic">Funds (BUSD)</b> through{" "}
+          {highlighTextPrimary("Eazy Referrals")}, the{" "}
+          {highlighTextPrimary("Eazy Matrix")} itself, and
+          {highlighTextPrimary("Eazy Rewards")}.
         </p>
-
         <p>
-          Pls refer to our <a 
-          href="https://fundingmadeeazy.com/eazypaper.pdf"
-          target={'_blank'}
-          >{highlighText("Eazy", "text-[#E6B32A] font-bold italic")}{"Paper"}</a> for more details.
+          We're all about sharing the wealth here at{" "}
+          {highlighTextPrimary("FundingMadeEazy")}.
         </p>
-
         <p>
-          And just Connect your wallet (Trust Wallet or Metamask) to start raising <span className="font-bold">Funds (BUSD)</span> and getting rewarded with {highlighText("FundingMadeEazy", "text-[#E6B32A] font-bold italic")}{".com"} today and everyday!
+          Please refer to our {highlighTextPrimary("Eazy")}
+          <b className="italic">Paper</b> for more details.
         </p>
-
+        <p>
+          Just Connect your wallet (<i>Trust Wallet or Metamask</i>) to start
+          raising
+          <b className="italic">Funds (BUSD)</b> and getting rewarded with{" "}
+          {highlighTextPrimary("FundingMadeEazy")} today and everyday!
+        </p>
+        <p>
+          If you have no Referral Link, please use the following to address to
+          register:
+          <div className="my-2" />
+          <CopyToClipboard content="0x7291C4Ba40497139e0276a818bEB08E6e86Bdd69" />
+        </p>
       </Section>
       {/*       <Section className="flex justify-center flex-col max-w-3xl mx-auto border text-center">
         <div className="p-4 space-y-4">

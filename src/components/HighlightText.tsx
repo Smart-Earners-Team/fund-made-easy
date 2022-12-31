@@ -1,12 +1,5 @@
 import React from "react";
-import cls from "classnames";
 
-export default function highlighText(text: string, className?: string) {
-  return (
-    <span
-      className={cls(className ? className : "text-primary-700 font-semibold")}
-    >
-      {text}
-    </span>
-  );
+export default function highlighTextPrimary(text: string) {
+  return <span className="text-[#E6B32A] font-bold italic">{text}</span>;
 }
