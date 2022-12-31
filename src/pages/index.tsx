@@ -37,11 +37,11 @@ const IndexPage = (props: PageProps) => {
         <ol className="list-inside space-y-2 list-disc text-xl pl-4">
           <li>
             {highlighTextPrimary("Eazy Referrals")} (transferred instantly to
-            your BUSD wallet)
+            your <b>BUSD</b> wallet)
           </li>
           <li>
-            {highlighTextPrimary("Eazy Matrix")} (transferred instantly to your
-            BUSD wallet)
+            {highlighTextPrimary("Eazy Matrix")} (transferred instantly to your{" "}
+            <b>BUSD</b> wallet)
           </li>
           <li>
             {highlighTextPrimary("Eazy Rewards")} (available on a Daily
