@@ -25,15 +25,34 @@ const IndexPage = (props: PageProps) => {
         <p>
           Welcome to {highlighTextPrimary("FundingMadeEazy")}, the decentralized
           smart contract on the <i>BNB (Binance) Smart Chain</i> that helps you
-          raise and receive <b className="italic">Funds (BUSD)</b> in a snap!
+          raise and receive <b className="italic">Funds</b> <b>(</b>
+          <b className="italic">BUSD</b>
+          <b>)</b> in a snap!
         </p>
         <p>
           Our {highlighTextPrimary("Eazy Matrix")} system, which uses a{" "}
           <b className="italic">Multiple of 3 through 7 Repetitions</b>, lets
-          you raise <b className="italic">Funds (BUSD)</b> through{" "}
-          {highlighTextPrimary("Eazy Referrals")}, the{" "}
-          {highlighTextPrimary("Eazy Matrix")} itself, and
-          {highlighTextPrimary("Eazy Rewards")}.
+          you raise <b className="italic">Funds</b> <b>(</b>
+          <b className="italic">BUSD</b>
+          <b>)</b> through:
+        </p>
+        <ol className="list-inside space-y-2 list-disc text-xl pl-4">
+          <li>
+            {highlighTextPrimary("Eazy Referrals")} (transferred instantly to
+            your BUSD wallet)
+          </li>
+          <li>
+            {highlighTextPrimary("Eazy Matrix")} (transferred instantly to your
+            BUSD wallet)
+          </li>
+          <li>
+            {highlighTextPrimary("Eazy Rewards")} (available on a Daily
+            Recurring Basis for you to Claim)
+          </li>
+        </ol>
+        <p>
+          Simply invite three or more people to join, who will repeat this{" "}
+          {highlighTextPrimary("Eazy")} process.
         </p>
         <p>
           We're all about sharing the wealth here at{" "}
@@ -45,23 +64,18 @@ const IndexPage = (props: PageProps) => {
         </p>
         <p>
           Just Connect your wallet (<i>Trust Wallet or Metamask</i>) to start
-          raising
-          <b className="italic">Funds (BUSD)</b> and getting rewarded with{" "}
+          raising <b className="italic">Funds</b> <b>(</b>
+          <b className="italic">BUSD</b>
+          <b>)</b> and getting rewarded with{" "}
           {highlighTextPrimary("FundingMadeEazy")} today and everyday!
         </p>
         <p>
-          If you have no Referral Link, please use the following to address to
+          If you have no Referral Link, please use the following address to
           register:
           <div className="my-2" />
           <CopyToClipboard content="0x7291C4Ba40497139e0276a818bEB08E6e86Bdd69" />
         </p>
       </Section>
-      {/*       <Section className="flex justify-center flex-col max-w-3xl mx-auto border text-center">
-        <div className="p-4 space-y-4">
-          <p className="text-center">Countdown to Public Launch</p>
-          <CountdownTimer timestamp={endTime} handleDisableButton={() => {}} />
-        </div>
-      </Section> */}
       <UserInteractionComponent {...props} />
       <Section
         containerClass="bg-[url(/bgs/yellow-waves.png)] bg-no-repeat bg-cover bg-gray-50"
