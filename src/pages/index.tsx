@@ -33,21 +33,21 @@ const IndexPage = (props: PageProps) => {
           <b className="italic">Multiple of 3 through 7 Repetitions</b>, lets
           you raise <b className="italic">Funds</b> (
           <b className="italic">BUSD</b>) through:
+          <ol className="list-inside space-y-1 list-disc text-xl pl-4">
+            <li>
+              {highlighTextPrimary("Eazy Referrals")} (transferred instantly to
+              your <b>BUSD</b> wallet)
+            </li>
+            <li>
+              {highlighTextPrimary("Eazy Matrix")} (transferred instantly to
+              your <b>BUSD</b> wallet)
+            </li>
+            <li>
+              {highlighTextPrimary("Eazy Rewards")} (available on a Daily
+              Recurring Basis for you to Claim)
+            </li>
+          </ol>
         </p>
-        <ol className="list-inside space-y-2 list-disc text-xl pl-4">
-          <li>
-            {highlighTextPrimary("Eazy Referrals")} (transferred instantly to
-            your <b>BUSD</b> wallet)
-          </li>
-          <li>
-            {highlighTextPrimary("Eazy Matrix")} (transferred instantly to your{" "}
-            <b>BUSD</b> wallet)
-          </li>
-          <li>
-            {highlighTextPrimary("Eazy Rewards")} (available on a Daily
-            Recurring Basis for you to Claim)
-          </li>
-        </ol>
         <p>
           Simply invite three or more people to join who will repeat this{" "}
           {highlighTextPrimary("Eazy")} process.
