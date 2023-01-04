@@ -7,6 +7,7 @@ import Section from "../components/Section";
 import SEO from "../components/SEO";
 import UserInteractionComponent from "../components/UserInteractionComponent/UserInteraction";
 import CopyToClipboard from "../components/Tools/copyToClipboard";
+import Link from "../components/Link";
 // import CountdownTimer from "../components/Tools/CountDownTimer";
 
 const IndexPage = (props: PageProps) => {
@@ -57,14 +58,21 @@ const IndexPage = (props: PageProps) => {
           {highlighTextPrimary("FundingMadeEazy")}.
         </p>
         <p>
-          Please refer to our {highlighTextPrimary("Eazy")}
-          <b className="italic">Paper</b> for more details.
+          Please refer to our{" "}
+          <Link
+            to="/eazypaper.pdf"
+            className="underline hover:no-underline active:underline focus-within:no-underline focus:no-underline"
+          >
+            {highlighTextPrimary("Eazy")}
+            <b className="italic">Paper</b>
+          </Link>{" "}
+          for more details.
         </p>
         <p>
-          Just Connect your wallet (<i>Trust Wallet or Metamask</i>) to start
-          raising <b className="italic">Funds</b> (
+          And just Connect your wallet (<i>Trust Wallet or Metamask</i>) to
+          start raising <b className="italic">Funds</b> (
           <b className="italic">BUSD</b>) and getting rewarded with{" "}
-          {highlighTextPrimary("FundingMadeEazy")} today and everyday!
+          {highlighTextPrimary("FundingMadeEazy")} today and every day!
         </p>
         <p>
           If you have no Referral Link, please use the following address to
