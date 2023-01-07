@@ -39,6 +39,7 @@
     "react-countdown-circle-timer": "^3.0.9",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",
+    "react-player": "^2.11.0",
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {

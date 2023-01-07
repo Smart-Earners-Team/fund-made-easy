@@ -9,6 +9,7 @@ import UserInteractionComponent from "../components/UserInteractionComponent/Use
 import CopyToClipboard from "../components/Tools/copyToClipboard";
 import Link from "../components/Link";
 // import CountdownTimer from "../components/Tools/CountDownTimer";
+import ReactPlayer from "react-player/youtube";
 
 const IndexPage = (props: PageProps) => {
   // const [endTime] = useState(1671559200);
@@ -22,7 +23,19 @@ const IndexPage = (props: PageProps) => {
           placeholder="blurred"
           className="my-3"
         />
-
+        <div className="bg-white w-full p-0 md:p-5 shadow-xl shadow-gray-200 rounded-md my-20 border border-r-primary-50">
+          <div className="w-full pt-[56.25%] relative bg-black">
+            <ReactPlayer
+              url="https://youtu.be/yZdn7_QPH7I"
+              width="100%"
+              height="100%"
+              pip={false}
+              preload="auto"
+              className="absolute top-0 left-0"
+              controls={true}
+            />
+          </div>
+        </div>
         <p>
           Welcome to {highlighTextPrimary("FundingMadeEazy")}, the decentralized
           smart contract on the <i>BNB (Binance) Smart Chain</i> that helps you
