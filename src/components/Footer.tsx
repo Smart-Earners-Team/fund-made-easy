@@ -34,7 +34,7 @@ const Footer = () => {
           <RiTelegramLine size="30px" />
         </a>
         <a
-          href="https://twitter.com/abdul_shabz?t=aBWHixvZbOi93B2n0WEdtg&s=09"
+          href="https://twitter.com/FundingMadeEazy?t=CPmyUvQ5XsXiXFO1-G-Z-A&s=09"
           rel="noopener noreferrer"
           target={"_blank"}
         >
