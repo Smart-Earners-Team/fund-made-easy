@@ -11,6 +11,7 @@ import Link from "../components/Link";
 // import CountdownTimer from "../components/Tools/CountDownTimer";
 import ReactPlayer from "react-player/youtube";
 import Button from "../components/Buttons/Button";
+import OldUserClaimRewards from "../components/OldUserClaimRewards";
 
 const IndexPage = (props: PageProps) => {
   // const [endTime] = useState(1671559200);
@@ -96,37 +97,7 @@ const IndexPage = (props: PageProps) => {
         </p>
       </Section>
       <UserInteractionComponent {...props} />
-      <Section containerClass="mb-10">
-        <h3>Claim Old Contract Rewards</h3>
-        <p className="text-sm text-gray-500">
-          We have recently updated our contract and it appears that you have
-          some outstanding rewards to redeem from the previous contract. Please
-          do so before <b>24th Jan, 2023.</b>
-        </p>
-        <div className="flex items-center justify-between mt-6">
-          <div className="flex items-baseline gap-3">
-            <span className="text-5xl font-light">30</span>
-            <div className="flex items-baseline gap-2">
-              <StaticImage
-                width={35}
-                height={35}
-                placeholder="blurred"
-                alt=""
-                src="../images/busd-logo.png"
-                class="flex-none"
-              />
-              <span className="text-2xl font-light">BUSD</span>
-            </div>
-          </div>
-          <Button
-            className="w-full max-w-xs text-sm md:text-base"
-            // disabled={requesting}
-            // onClick={handleRewardClaim}
-          >
-            Claim
-          </Button>
-        </div>
-      </Section>
+      <OldUserClaimRewards />
       <Section
         containerClass="bg-[url(/bgs/yellow-waves.png)] bg-no-repeat bg-cover bg-gray-50"
         className="flex justify-center"
