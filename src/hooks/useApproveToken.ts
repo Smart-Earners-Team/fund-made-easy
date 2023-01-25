@@ -7,7 +7,6 @@ import { calculateGasMargin } from "../utils";
 const useApproveToken = (spenderContract: Contract, tokenAddress: string) => {
   const { callWithGasPrice } = useCallWithGasPrice();
   const handleApprove = useCallback(async () => {
-    console.log(spenderContract)
     const estimatedGas = await spenderContract.estimateGas.approve(
       tokenAddress,
       MaxUint256

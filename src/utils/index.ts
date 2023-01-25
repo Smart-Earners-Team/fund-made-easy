@@ -1,6 +1,9 @@
 import { ChainId } from "../config";
 import { BigNumber } from "@ethersproject/bignumber";
 import { getAddress } from "@ethersproject/address";
+import BigNumberJs from "bignumber.js";
+import { UserInfo } from "../components/UserInteractionComponent/types";
+import { BIG_TEN } from "./bignumber";
 
 export const isMainNet = () => {
   const ActiveChainId = process.env.GATSBY_CHAIN_ID;
@@ -34,3 +37,23 @@ export const copyText = (text: string, cb?: () => void) => {
     cb?.();
   }
 };
+
+export function formatBigNumberValues(
+  userInfo: UserInfo,
+  busdValues: string[]
+) {
+  let newObj = {} as { [P in keyof typeof userInfo]: number };
+  for (const [key, value] of Object.entries(userInfo)) {
+    if (busdValues.includes(key)) {
+      // div busd values by 18, hack.
+      newObj[key as keyof typeof userInfo] = new BigNumberJs(value?._hex || 0)
+        .div(BIG_TEN.pow(18))
+        .toNumber();
+    } else {
+      newObj[key as keyof typeof userInfo] = new BigNumberJs(
+        value?._hex || 0
+      ).toNumber();
+    }
+  }
+  return newObj;
+}

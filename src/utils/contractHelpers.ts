@@ -4,7 +4,12 @@ import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { simpleRpcProvider } from "./providers";
 import BusdAbi from "../config/abi/busd.json";
 import fmeazyAbi from "../config/abi/fmeazy.json";
-import { getBusdAddress, getFmeazyAddress } from "./addressHelpers";
+import oldFmeazyAbi from "../config/abi/old-fmeazy.json";
+import {
+  getBusdAddress,
+  getFmeazyAddress,
+  getOldFmeazyAddress,
+} from "./addressHelpers";
 import bep20Abi from "../config/abi/erc20.json";
 
 export const getContract = (
@@ -36,6 +41,10 @@ export const getBusdContract = (signer?: Signer | Provider) => {
 
 export const getFmeazyContract = (signer?: Signer | Provider) => {
   return getContract(fmeazyAbi, getFmeazyAddress(), signer);
+};
+
+export const getOldFmeazyContract = (signer?: Signer | Provider) => {
+  return getContract(oldFmeazyAbi, getOldFmeazyAddress(), signer);
 };
 
 export const getBep20Contract = (

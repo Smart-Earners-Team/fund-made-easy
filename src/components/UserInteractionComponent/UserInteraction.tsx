@@ -11,7 +11,11 @@ import useToast from "../../hooks/useToast";
 import useModal from "../../components/Modal/useModal";
 import Loading from "../../components/Loading";
 import { useCallWithGasPrice } from "../../hooks/useCallWithGasPrice";
-import { calculateGasMargin, isAddress } from "../../utils";
+import {
+  calculateGasMargin,
+  formatBigNumberValues,
+  isAddress,
+} from "../../utils";
 import MetamaskIcon from "../../components/Svg/Icons/Metamask";
 import { registerToken } from "../../utils/wallet";
 import { ethers } from "ethers";
@@ -30,7 +34,6 @@ import {
 import { getBusdAddress, getFmeazyAddress } from "../../utils/addressHelpers";
 import Button from "../../components/Buttons/Button";
 import ConnectWalletButton from "../../components/Buttons/ConnectWalletButton";
-import { formatBigNumberValues } from "./utils";
 import type { UserInfo } from "./types";
 import Section from "../Section";
 import { StaticImage } from "gatsby-plugin-image";
@@ -178,10 +181,6 @@ function UserInteractionComponent({ location }: PageProps) {
     fetchUserInfo();
   }, [account, library, fast]);
 
-  /*   const disableHarvestButton = useCallback((state: boolean) => {
-    setHarvestDisabled(state);
-  }, []); */
-
   const toastErrorHandler = useCallback(
     () =>
       toastError(
@@ -310,9 +309,11 @@ function UserInteractionComponent({ location }: PageProps) {
               Renewal Vault: {userInfo.renewalVault} BUSD
             </div>
           )}
-          {active && <div className="my-3">
-            <ConnectWalletButton />
-          </div>}
+          {active && (
+            <div className="my-3">
+              <ConnectWalletButton />
+            </div>
+          )}
           {!activeUser && (
             <Fragment>
               <div className="flex flex-col sm:flex-row justify-center gap-4 px-4 items-center">
@@ -392,8 +393,6 @@ function UserInteractionComponent({ location }: PageProps) {
         <div className="w-full max-w-md mb-3 mx-auto">
           {active ? (
             <div className="space-y-4">
-              {/* start */}
-
               <div className="bg-white py-2 px-3 shadow-md rounded-lg text-base w-full border">
                 <div className="flex gap-4 justify-between items-start">
                   <div className="space-y-1 w-full">

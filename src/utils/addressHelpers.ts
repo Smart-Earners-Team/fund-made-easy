@@ -7,4 +7,5 @@ export const getAddress = (address: Address): string => {
 };
 
 export const getBusdAddress = () => getAddress(addresses.busd);
-export const getFmeazyAddress = () => getAddress(addresses.fmeazy)
+export const getFmeazyAddress = () => getAddress(addresses.fmeazy);
+export const getOldFmeazyAddress = () => getAddress(addresses.oldFmeazy);
