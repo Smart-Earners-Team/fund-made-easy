@@ -118,7 +118,7 @@ function OldUserClaimRewards({ requesting, handleRequest }: Props) {
     }
   }, [account, toastError, library]);
 
-  return userInfo.pendingReward !== 0 ? (
+  return (
     <Section containerClass="mb-10 -mt-10">
       <h3>Claim Old Contract Rewards</h3>
       <p className="text-sm text-gray-500">
@@ -149,8 +149,6 @@ function OldUserClaimRewards({ requesting, handleRequest }: Props) {
         </Button>
       </div>
     </Section>
-  ) : (
-    <div />
   );
 }
 
