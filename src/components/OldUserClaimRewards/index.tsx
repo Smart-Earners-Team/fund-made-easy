@@ -114,7 +114,7 @@ function OldUserClaimRewards() {
     }
   }, [account, toastError, library]);
 
-  return (
+  return userInfo.pendingReward ? (
     <Section containerClass="mb-10 -mt-10">
       <h3>Claim Old Contract Rewards</h3>
       <p className="text-sm text-gray-500">
@@ -145,6 +145,8 @@ function OldUserClaimRewards() {
         </Button>
       </div>
     </Section>
+  ) : (
+    <div />
   );
 }
 
