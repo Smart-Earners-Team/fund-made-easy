@@ -13,14 +13,9 @@ import { getBusdAddress } from "../../utils/addressHelpers";
 import { UserInfo } from "../UserInteractionComponent/types";
 import { RefreshContext } from "../../contexts/RefreshContext";
 
-type Props = {
-  requesting: boolean;
-  handleRequest: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
 const busdAddress = getBusdAddress();
 
-function OldUserClaimRewards({ requesting, handleRequest }: Props) {
+function OldUserClaimRewards() {
   const [userInfo, setUserInfo] = useState<
     ReturnType<typeof formatBigNumberValues>
   >({
@@ -33,6 +28,7 @@ function OldUserClaimRewards({ requesting, handleRequest }: Props) {
     renewalVault: 0,
     busdBal: 0,
   });
+  const [requesting, setRequesting] = useState(false);
 
   const { account, library } = useActiveWeb3React();
   const { toastError } = useToast();
@@ -106,14 +102,14 @@ function OldUserClaimRewards({ requesting, handleRequest }: Props) {
   const handleRewardClaim = useCallback(async () => {
     if (account && library) {
       try {
-        handleRequest(true);
+        setRequesting(true);
         const contract = getOldFmeazyContract(library.getSigner());
         const tx = await contract.claimReward();
         await tx.wait();
       } catch (error) {
         toastErrorHandler();
       } finally {
-        handleRequest(false);
+        setRequesting(false);
       }
     }
   }, [account, toastError, library]);
