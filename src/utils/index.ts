@@ -2,8 +2,8 @@ import { ChainId } from "../config";
 import { BigNumber } from "@ethersproject/bignumber";
 import { getAddress } from "@ethersproject/address";
 import BigNumberJs from "bignumber.js";
-import { UserInfo } from "../components/UserInteractionComponent/types";
 import { BIG_TEN } from "./bignumber";
+import { ethers } from "ethers";
 
 export const isMainNet = () => {
   const ActiveChainId = process.env.GATSBY_CHAIN_ID;
@@ -39,7 +39,7 @@ export const copyText = (text: string, cb?: () => void) => {
 };
 
 export function formatBigNumberValues(
-  userInfo: UserInfo,
+  userInfo: { [key: string]: ethers.BigNumber },
   busdValues: string[]
 ) {
   let newObj = {} as { [P in keyof typeof userInfo]: number };

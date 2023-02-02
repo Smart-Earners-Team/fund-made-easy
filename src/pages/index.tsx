@@ -8,10 +8,9 @@ import SEO from "../components/SEO";
 import UserInteractionComponent from "../components/UserInteractionComponent/UserInteraction";
 import CopyToClipboard from "../components/Tools/copyToClipboard";
 import Link from "../components/Link";
-// import CountdownTimer from "../components/Tools/CountDownTimer";
 import ReactPlayer from "react-player/youtube";
-import Button from "../components/Buttons/Button";
 import OldUserClaimRewards from "../components/OldUserClaimRewards";
+import StatComponent from "../components/StatComponents/StatComponent";
 
 const IndexPage = (props: PageProps) => {
   // const [endTime] = useState(1671559200);
@@ -96,6 +95,7 @@ const IndexPage = (props: PageProps) => {
           <CopyToClipboard content="0x7291C4Ba40497139e0276a818bEB08E6e86Bdd69" />
         </p>
       </Section>
+      <StatComponent />
       <UserInteractionComponent {...props} />
       <OldUserClaimRewards />
       <Section

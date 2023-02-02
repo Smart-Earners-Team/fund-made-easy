@@ -38,6 +38,7 @@ import type { UserInfo } from "./types";
 import Section from "../Section";
 import { StaticImage } from "gatsby-plugin-image";
 import MetricChip from "./MetricChip";
+import GiftMemebership from "../GiftMemebershipComponents/GiftMemebership";
 
 const busdAddress = getBusdAddress();
 const fmeazyAddress = getFmeazyAddress();
@@ -60,6 +61,7 @@ function UserInteractionComponent({ location }: PageProps) {
     busdBal: 0,
   });
   const [activeUser, setActiveUser] = useState(false);
+  const [error, setError] = useState<null | string>(null);
 
   const { active, library, account } = useActiveWeb3React();
   const { fast } = useContext(RefreshContext);
@@ -270,8 +272,6 @@ function UserInteractionComponent({ location }: PageProps) {
     }
   }, [account, toastError, library]);
 
-  const [error, setError] = useState<null | string>(null);
-
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget.value;
     const isValid = isAddress(input);
@@ -286,7 +286,7 @@ function UserInteractionComponent({ location }: PageProps) {
   return (
     <Section padding className="relative">
       <div className="w-full">
-        <h3>Referral Link</h3>
+        <h3>Your Referral Link</h3>
         <CopyToClipboard
           content={`${location.origin}/?ref=${account}`}
           canCopy={Boolean(account)}
@@ -497,6 +497,7 @@ function UserInteractionComponent({ location }: PageProps) {
                   }
                 />
               </div>
+              <GiftMemebership />
             </div>
           ) : (
             <div className="p-3 text-center flex flex-col items-center space-y-3 rounded-lg bg-white">

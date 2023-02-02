@@ -24,15 +24,24 @@ const query = graphql`
   }
 `;
 
-function SEO({ meta = [], title = "", description, slug = "", image }: SEOProps) {
+function SEO({
+  meta = [],
+  title = "",
+  description,
+  slug = "",
+  image,
+}: SEOProps) {
   return (
     <StaticQuery
       query={query}
       render={(data) => {
         const { siteMetadata } = data.site;
         const metaDescription = description || siteMetadata.description;
-        const metaImages = image ? image : { og: ogImage, twitter: twitterImage };
-        const getMetaImageUrl = (image: string) => `${siteMetadata.siteUrl}${image}`;
+        const metaImages = image
+          ? image
+          : { og: ogImage, twitter: twitterImage };
+        const getMetaImageUrl = (image: string) =>
+          `${siteMetadata.siteUrl}${image}`;
         const url = `${siteMetadata.siteUrl}${slug}`;
         const twitterUrl = "@abdul_shabz";
         return (
@@ -89,8 +98,13 @@ function SEO({ meta = [], title = "", description, slug = "", image }: SEOProps)
                 },
               ])
               .concat(meta)
-              .map(({ name, property, content }) => (
-                <meta key={name} name={name} property={property} content={content} />
+              .map(({ name, property, content }, index) => (
+                <meta
+                  key={`${name}-${index}`}
+                  name={name}
+                  property={property}
+                  content={content}
+                />
               ))}
           </Fragment>
         );

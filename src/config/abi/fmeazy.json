@@ -160,6 +160,15 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "forUser", "type": "address" }
+    ],
+    "name": "broadcastStart",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "address", "name": "parent", "type": "address" }
     ],
     "name": "buy",
@@ -192,10 +201,137 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "time", "type": "uint256" },
+          { "internalType": "address", "name": "wallet", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "EazyReferrals",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "renewalVault",
+            "type": "uint256"
+          },
+          { "internalType": "address", "name": "parent", "type": "address" },
+          { "internalType": "uint256", "name": "refsCount", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "membership",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "start", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "matrixIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "EazyMatrix",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "eazyRewardsPaid",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "refsWith3", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "lastFreeIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timesRenewed",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct FundingMadeEazy.User",
+        "name": "_user_",
+        "type": "tuple"
+      }
+    ],
+    "name": "fixUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gUsersDet",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "usersWithFullRenewalVaults",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "usersFit4RenewalRN",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gPendingRewards",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" }
+    ],
+    "name": "getChildren",
+    "outputs": [
+      { "internalType": "address[]", "name": "", "type": "address[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getParticipants",
+    "outputs": [
+      { "internalType": "address[]", "name": "", "type": "address[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "bytes32", "name": "role", "type": "bytes32" }
     ],
     "name": "getRoleAdmin",
     "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" }
+    ],
+    "name": "giftMembership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "globalVariables",
+    "outputs": [
+      { "internalType": "uint256", "name": "members", "type": "uint256" },
+      { "internalType": "uint256", "name": "gEazyMatrix", "type": "uint256" },
+      { "internalType": "uint256", "name": "gEazyRewards", "type": "uint256" },
+      { "internalType": "uint256", "name": "gEazyReferral", "type": "uint256" },
+      { "internalType": "uint256", "name": "rProcessed", "type": "uint256" }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -210,6 +346,13 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "hasRedeemed",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "bytes32", "name": "role", "type": "bytes32" },
       { "internalType": "address", "name": "account", "type": "address" }
@@ -217,6 +360,26 @@
     "name": "hasRole",
     "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_root", "type": "address" },
+      {
+        "internalType": "contract oldInterface",
+        "name": "_oI",
+        "type": "address"
+      },
+      {
+        "internalType": "contract oldDistributor",
+        "name": "_oD",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "_fme_vault", "type": "address" }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -266,13 +429,21 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
+    "inputs": [],
+    "name": "oI",
+    "outputs": [
+      { "internalType": "contract oldInterface", "name": "", "type": "address" }
     ],
-    "name": "refs",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address[]", "name": "_addrs", "type": "address[]" }
+    ],
+    "name": "redeemMultiple",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -280,6 +451,13 @@
     "name": "regFee",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renewMe",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -305,15 +483,6 @@
       { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "revokeRole",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_val", "type": "uint256" }
-    ],
-    "name": "setRenewPeriod",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -375,7 +544,8 @@
         "type": "uint256"
       },
       { "internalType": "uint256", "name": "refsWith3", "type": "uint256" },
-      { "internalType": "uint256", "name": "lastFreeIndex", "type": "uint256" }
+      { "internalType": "uint256", "name": "lastFreeIndex", "type": "uint256" },
+      { "internalType": "uint256", "name": "timesRenewed", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
