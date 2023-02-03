@@ -52,8 +52,8 @@ function StatComponent() {
 
   return (
     <Section containerClass="my-8">
-      <div className="text-sm font-light p-2 text-primary-900">
-        Verified Stats
+      <div className="text-sm font-light text-center text-primary-900">
+        Live Stats
       </div>
       <div className="flex flex-col m-5">
         <div className="flex flex-col md:flex-row justify-between">

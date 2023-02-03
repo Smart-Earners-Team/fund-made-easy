@@ -95,9 +95,9 @@ const IndexPage = (props: PageProps) => {
           <CopyToClipboard content="0x7291C4Ba40497139e0276a818bEB08E6e86Bdd69" />
         </p>
       </Section>
-      <StatComponent />
       <UserInteractionComponent {...props} />
       <OldUserClaimRewards />
+      <StatComponent />
       <Section
         containerClass="bg-[url(/bgs/yellow-waves.png)] bg-no-repeat bg-cover bg-gray-50"
         className="flex justify-center"

@@ -65,7 +65,7 @@ function GiftMembershipModal({}: Props) {
   return (
     <div className="w-full max-w-screen-lg shadow-lg border p-3 md:p-10 bg-white mx-auto text-2xl space-y-8">
       <div className="flex justify-between items-center">
-        <h3 className="text-4xl">Gift Memembership to your loved ones</h3>
+        <h3 className="text-4xl">Gift a Membership to Your Loved Ones</h3>
         <button
           aria-label="close modal"
           className="bg-gray-200 hover:bg-gray-200 transition-colors flex-none text-gray-600"
@@ -75,17 +75,17 @@ function GiftMembershipModal({}: Props) {
         </button>
       </div>
       <p>
-        Now you can help others earn from{" "}
+        Now you can help others receive from{" "}
         {highlighTextPrimary("FundingMadeEazy")} by paying for their membership.
       </p>
       <ol className="list-decimal list-inside space-y-2 text-xl">
         <li>
-          Hold up to 30 <b className="italic">BUSD</b> membership fee in your
-          wallet 💰
+          Hold 30 <b className="italic">BUSD</b> in your wallet to pay for
+          membership 💰
         </li>
-        <li>Enter the address you want to fund 📝</li>
+        <li>Enter the address you want to pay for 📝</li>
         <li>Confirm the transaction 👍</li>
-        <li>Share love love ❤️💕</li>
+        <li>Share the love ❤️💕</li>
       </ol>
       <div className="w-full">
         <label htmlFor="address" className="text-sm font-light">

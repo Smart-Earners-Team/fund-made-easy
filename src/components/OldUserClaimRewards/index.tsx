@@ -115,7 +115,7 @@ function OldUserClaimRewards() {
   }, [account, toastError, library]);
 
   return userInfo.pendingReward ? (
-    <Section containerClass="mb-10 -mt-10">
+    <Section>
       <h3>Claim Old Contract Rewards</h3>
       <p className="text-sm text-gray-500">
         We have recently updated our contract and it appears that you have some

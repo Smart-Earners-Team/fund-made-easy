@@ -284,7 +284,7 @@ function UserInteractionComponent({ location }: PageProps) {
   };
 
   return (
-    <Section padding className="relative">
+    <Section containerClass="mt-12" className="relative">
       <div className="w-full">
         <h3>Your Referral Link</h3>
         <CopyToClipboard
