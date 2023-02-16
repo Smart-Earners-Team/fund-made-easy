@@ -10,7 +10,7 @@ import CopyToClipboard from "../components/Tools/copyToClipboard";
 import Link from "../components/Link";
 import ReactPlayer from "react-player/youtube";
 import OldUserClaimRewards from "../components/OldUserClaimRewards";
-import StatComponent from "../components/StatComponents/StatComponent";
+// import StatComponent from "../components/StatComponents/StatComponent";
 
 const IndexPage = (props: PageProps) => {
   // const [endTime] = useState(1671559200);
@@ -97,7 +97,7 @@ const IndexPage = (props: PageProps) => {
       </Section>
       <UserInteractionComponent {...props} />
       <OldUserClaimRewards />
-      <StatComponent />
+      {/* <StatComponent /> */}
       <Section
         containerClass="bg-[url(/bgs/yellow-waves.png)] bg-no-repeat bg-cover bg-gray-50"
         className="flex justify-center"

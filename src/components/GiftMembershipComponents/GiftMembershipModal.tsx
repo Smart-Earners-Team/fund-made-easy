@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { isAddress } from "../../utils";
+import React, { useCallback, useEffect, useState } from "react";
+import { calculateGasMargin, isAddress } from "../../utils";
 import { BiCheck } from "react-icons/bi";
 import clx from "classnames";
 import Button from "../Buttons/Button";
@@ -8,19 +8,92 @@ import { GiCancel } from "react-icons/gi";
 import useModal from "../Modal/useModal";
 import useToast from "../../hooks/useToast";
 import useActiveWeb3React from "../../hooks/useActiveWeb3React";
-import { getFmeazyContract } from "../../utils/contractHelpers";
+import {
+  getBep20Contract,
+  getBusdContract,
+  getFmeazyContract,
+} from "../../utils/contractHelpers";
+import { getBusdAddress, getFmeazyAddress } from "../../utils/addressHelpers";
+import { MaxUint256 } from "@ethersproject/constants";
+import { useCallWithGasPrice } from "../../hooks/useCallWithGasPrice";
 
 type Props = {};
 
+const busdAddress = getBusdAddress();
+const fmeazyAddress = getFmeazyAddress();
+
 function GiftMembershipModal({}: Props) {
-  const [error, setError] = useState<null | string>(null);
   const [address, setAddress] = useState<string>("");
+  const [approved, setApproved] = useState(false);
+  const [error, setError] = useState<null | string>(null);
   const [confirmed, setConfirmed] = useState(false);
   const [requesting, setRequesting] = useState(false);
 
   const { library, account } = useActiveWeb3React();
+  const { callWithGasPrice } = useCallWithGasPrice();
   const [, closeModal] = useModal(null);
   const { toastError } = useToast();
+
+  // Check user allowance
+  useEffect(() => {
+    (async () => {
+      setRequesting(true);
+      if (account && library) {
+        const contract = getBep20Contract(
+          busdAddress,
+          library.getSigner(account)
+        );
+        contract
+          .allowance(account, fmeazyAddress)
+          .then(({ _hex }: any) => {
+            if (MaxUint256.eq(_hex)) {
+              setApproved(true);
+            } else {
+              setApproved(false);
+            }
+            return MaxUint256.eq(_hex); // return promise for finally to run
+          })
+          .finally(() => {
+            setRequesting(false);
+          });
+      } else {
+        setApproved(false);
+        setRequesting(false);
+      }
+    })();
+  }, [account, library, approved]);
+
+  const handleApprove = useCallback(async () => {
+    setRequesting(true);
+
+    try {
+      if (account && library) {
+        const contract = getBusdContract(library?.getSigner(account));
+
+        const estimatedGas = await contract.estimateGas.approve(
+          fmeazyAddress,
+          MaxUint256
+        );
+
+        const tx = await callWithGasPrice(
+          contract,
+          "approve",
+          [fmeazyAddress, MaxUint256],
+          {
+            gasLimit: calculateGasMargin(estimatedGas),
+          }
+        );
+        await tx.wait();
+        setApproved(true);
+      }
+    } catch (e) {
+      console.log(e);
+      toastErrorHandler();
+      setApproved(false);
+    } finally {
+      setRequesting(false);
+    }
+  }, [account, toastError, library]);
 
   const handleOnChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +153,7 @@ function GiftMembershipModal({}: Props) {
       </p>
       <ol className="list-decimal list-inside space-y-2 text-xl">
         <li>
-          Hold 30 <b className="italic">BUSD</b> in your wallet to pay for
+          Hold 30 <b className="italic">BUSD</b> in your wallet to pay for a
           membership 💰
         </li>
         <li>Enter the address you want to pay for 📝</li>
@@ -113,13 +186,23 @@ function GiftMembershipModal({}: Props) {
         </div>
         {error && <div className="text-xs text-red-400 my-1">{error}</div>}
       </div>
-      <Button
-        onClick={handlePayForMembership}
-        disabled={requesting || !confirmed || !!error}
-        className="w-full max-w-sm"
-      >
-        Pay
-      </Button>
+      {approved ? (
+        <Button
+          onClick={handlePayForMembership}
+          disabled={requesting || !confirmed || !!error}
+          className="w-full max-w-sm"
+        >
+          Pay
+        </Button>
+      ) : (
+        <Button
+          className="w-full text-sm md:text-base"
+          onClick={handleApprove}
+          disabled={requesting}
+        >
+          Approve
+        </Button>
+      )}
     </div>
   );
 }

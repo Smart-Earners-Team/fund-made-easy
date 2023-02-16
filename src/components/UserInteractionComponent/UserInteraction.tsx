@@ -38,7 +38,7 @@ import type { UserInfo } from "./types";
 import Section from "../Section";
 import { StaticImage } from "gatsby-plugin-image";
 import MetricChip from "./MetricChip";
-import GiftMemebership from "../GiftMemebershipComponents/GiftMemebership";
+import GiftMembership from "../GiftMembershipComponents/GiftMembership";
 
 const busdAddress = getBusdAddress();
 const fmeazyAddress = getFmeazyAddress();
@@ -497,7 +497,7 @@ function UserInteractionComponent({ location }: PageProps) {
                   }
                 />
               </div>
-              <GiftMemebership />
+              <GiftMembership />
             </div>
           ) : (
             <div className="p-3 text-center flex flex-col items-center space-y-3 rounded-lg bg-white">

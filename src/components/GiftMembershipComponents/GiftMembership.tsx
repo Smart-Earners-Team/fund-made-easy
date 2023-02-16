@@ -4,7 +4,7 @@ import useModal from "../Modal/useModal";
 import useActiveWeb3React from "../../hooks/useActiveWeb3React";
 import GiftMembershipModal from "./GiftMembershipModal";
 
-function GiftMemebership() {
+function GiftMembership() {
   const { active } = useActiveWeb3React();
 
   const [openGiftMembershipModal] = useModal(
@@ -16,9 +16,9 @@ function GiftMemebership() {
 
   return (
     <Button className="w-full" onClick={clickHandler}>
-      Gift Memebership
+      Gift Membership
     </Button>
   );
 }
 
-export default GiftMemebership;
+export default GiftMembership;
