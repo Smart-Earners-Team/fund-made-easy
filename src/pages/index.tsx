@@ -27,7 +27,7 @@ const IndexPage = (props: PageProps) => {
         <div className="bg-white w-full p-0 md:p-5 shadow-xl shadow-gray-200 rounded-md my-20 border border-r-primary-50">
           <div className="w-full pt-[56.25%] relative bg-black">
             <ReactPlayer
-              url="https://youtu.be/yZdn7_QPH7I"
+              url="https://youtu.be/gCAFnLGFuRs"
               width="100%"
               height="100%"
               pip={false}

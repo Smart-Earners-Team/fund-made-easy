@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import BigNumber from "bignumber.js";
@@ -42,15 +43,15 @@ import GiftMembership from "../GiftMembershipComponents/GiftMembership";
 
 const busdAddress = getBusdAddress();
 const fmeazyAddress = getFmeazyAddress();
+const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
+type UserInfoState = { [P in keyof UserInfo]: number } & { parent: string };
 function UserInteractionComponent({ location }: PageProps) {
   const [endTime, setEndTime] = useState(Date.now() / 1000);
   // const [harvestDisabled, setHarvestDisabled] = useState(false);
   const [approved, setApproved] = useState(false);
   const [requesting, setRequesting] = useState(true);
-  const [userInfo, setUserInfo] = useState<
-    ReturnType<typeof formatBigNumberValues>
-  >({
+  const [userInfo, setUserInfo] = useState<UserInfoState>({
     EazyMatrix: 0,
     EazyReferrals: 0,
     eazyRewardsPaid: 0,
@@ -59,6 +60,7 @@ function UserInteractionComponent({ location }: PageProps) {
     refsWith3: 0,
     renewalVault: 0,
     busdBal: 0,
+    parent: "",
   });
   const [activeUser, setActiveUser] = useState(false);
   const [error, setError] = useState<null | string>(null);
@@ -74,6 +76,15 @@ function UserInteractionComponent({ location }: PageProps) {
   );
   const [presentReferralInputModal] = useModal(<InputReferralModal />);
   const { refAddress, setRefAddress } = useAppContext();
+
+  // We use this if user does not explicitly provide a ref address
+  const isValidParent = useMemo(() => {
+    const parent = userInfo.parent;
+    if (!refAddress && parent && parent !== NULL_ADDRESS) {
+      return parent;
+    }
+    return false;
+  }, [refAddress, userInfo.parent]);
 
   // controll request modal
   useEffect(() => {
@@ -140,7 +151,8 @@ function UserInteractionComponent({ location }: PageProps) {
           refsCount,
           eazyRewardsPaid,
           renewalVault,
-        } = usersRes as UserInfo;
+          parent,
+        } = usersRes as UserInfo & { parent: string };
         const { endDate, pendingReward } = userInfoRes;
         const endDateformated = new BigNumber(endDate._hex).toNumber();
         const userInfo = formatBigNumberValues(
@@ -162,8 +174,8 @@ function UserInteractionComponent({ location }: PageProps) {
             "eazyRewardsPaid",
             "busdBal",
           ]
-        );
-        setUserInfo(userInfo);
+        ) as unknown as UserInfoState;
+        setUserInfo({ ...userInfo, parent });
         setEndTime(endDateformated);
       } else {
         setUserInfo({
@@ -175,6 +187,7 @@ function UserInteractionComponent({ location }: PageProps) {
           refsWith3: 0,
           renewalVault: 0,
           busdBal: 0,
+          parent: "",
         });
         setEndTime(Date.now() / 1000);
         setActiveUser(false);
@@ -379,7 +392,9 @@ function UserInteractionComponent({ location }: PageProps) {
                 <input
                   className="border w-full p-1 bg-gray-50"
                   onChange={handleOnChange}
-                  value={refAddress || ""}
+                  value={
+                    refAddress ? refAddress : isValidParent ? isValidParent : ""
+                  }
                 />
                 {error && (
                   <div className="text-sm bg-red-50 text-red-400 my-1">
